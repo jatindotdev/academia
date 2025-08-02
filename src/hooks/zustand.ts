@@ -23,7 +23,6 @@ export function useScreen() {
   const isMobile = useSyncExternalStore(
     (callback) => {
       if (typeof window === "undefined") return () => {};
-      // Immediately call the callback to ensure the state is up-to-date on mount
       callback();
       window.addEventListener("resize", callback);
       return () => window.removeEventListener("resize", callback);

@@ -25,9 +25,12 @@ body {
 
 @layer utilities {
   .apply-border-sm {
-    @apply border border-slate-400/5;
+    @apply border border-white/5;
   }
   .apply-border-md {
     @apply border border-slate-400/10;
+  }
+  .background-rounded {
+    @apply bg-white/5  px-2 py-0.5 rounded-full text-sm;
   }
 }

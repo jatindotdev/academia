@@ -60,7 +60,7 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
           ref={isOpen && isMobile ? myDivRef : null}
           className={`${
             isMobile
-              ? `fixed inset-y-2 bg-white/5 backdrop-blur-xl rounded-lg transform-gpu transition-transform duration-300 min-w-64 ${
+              ? `z-10 fixed inset-y-2 bg-white/5 backdrop-blur-xl rounded-lg transform-gpu transition-transform duration-300 min-w-64 ${
                   isOpen ? "translate-x-0" : "-translate-x-96"
                 } `
               : "min-w-76"
@@ -71,7 +71,7 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
         <div className="flex-1 bg-black/30 rounded-lg apply-border-md flex flex-col w-full h-full ">
           <MobileMenuBar />
           <LastUpdated />
-          <div className=" p-4 overflow-y-auto h-full w-full overflow-x-clip ">
+          <div className="p-3 overflow-y-auto h-full w-full overflow-x-clip ">
             {children}
           </div>
         </div>
