@@ -19,7 +19,7 @@ export default Sidebar;
 
 const Header = () => {
   return (
-    <div className="flex px-4 w-full h-12 items-center justify-center border-b border-white/5">
+    <div className="flex px-4 w-full min-h-12 items-center justify-center border-b border-white/5">
       <span></span>
       <h1 className="text-lg tracking-wide">AcademiaX</h1>
     </div>
@@ -56,7 +56,7 @@ const Menu = () => {
 
 const Footer = () => {
   return (
-    <div className="h-12 flex items-center justify-center border-t border-white/5">
+    <div className="min-h-12 flex items-center justify-center border-t border-white/5">
       Footer
     </div>
   );
