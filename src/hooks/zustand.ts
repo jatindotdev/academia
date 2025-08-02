@@ -6,13 +6,38 @@ type AuthType = {
   login: () => void;
 };
 
+type SidebarState = {
+  isOpen: boolean;
+  setOpen: (open: boolean) => void;
+};
+
 export const useAuth = create<AuthType>((set) => ({
   user: false,
   logout: () => set(() => ({ user: false })),
   login: () => set(() => ({ user: true })),
 }));
 
-export const useTimetable = create((set) => ({
-  data: {},
-  setData: (info: object) => set(() => ({ data: info })),
+import { useSyncExternalStore } from "react";
+
+export function useScreen() {
+  const isMobile = useSyncExternalStore(
+    (callback) => {
+      if (typeof window === "undefined") return () => {};
+      // Immediately call the callback to ensure the state is up-to-date on mount
+      callback();
+      window.addEventListener("resize", callback);
+      return () => window.removeEventListener("resize", callback);
+    },
+    () => {
+      if (typeof window === "undefined") return true;
+      return window.innerWidth <= 1200;
+    },
+    () => true
+  );
+  return { isMobile };
+}
+
+export const useSidebar = create<SidebarState>((set) => ({
+  isOpen: false,
+  setOpen: (open: boolean) => set({ isOpen: open }),
 }));

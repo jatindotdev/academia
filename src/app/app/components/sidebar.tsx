@@ -1,3 +1,6 @@
+import { useScreen } from "@/hooks/zustand";
+import { SidebarToggle } from "@/utils/sidebarToggle";
+import { X } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 type MenuType = {
@@ -20,7 +23,6 @@ export default Sidebar;
 const Header = () => {
   return (
     <div className="flex px-4 w-full min-h-12 items-center justify-center border-b border-white/5">
-      <span></span>
       <h1 className="text-lg tracking-wide">AcademiaX</h1>
     </div>
   );
@@ -43,6 +45,7 @@ const Menu = () => {
           <Link
             key={i.name}
             href={i.url}
+            onClick={SidebarToggle}
             className="flex gap-3 justify-between px-4 py-1.5 rounded-md capitalize apply-border-sm bg-[#16171b] "
           >
             <h1>{i.name}</h1>
