@@ -2,19 +2,15 @@
 import { useUserInfo } from "@/hooks/query";
 import React from "react";
 import { UserInfo } from "srm-academia-api";
+import { GlobalLoader } from "../components/loader";
 
 const Page = () => {
   const { data, isPending } = useUserInfo();
-  if (isPending)
-    return (
-      <div className="flex justify-center items-center h-96  text-xl">
-        Loading...
-      </div>
-    );
+  if (isPending) return <GlobalLoader className="h-10 w-10 text-blue-400" />;
   if (!data)
     return (
-      <div className="flex justify-center items-center h-96 text-red-400 text-xl">
-        No data
+      <div className="flex h-full w-full justify-center items-center">
+        No data found
       </div>
     );
 
@@ -26,7 +22,7 @@ export default Page;
 const Data = ({ data }: { data: UserInfo }) => {
   return (
     <div className="w-full flex flex-col items-center py-15 text-sm px-6">
-      <div className="flex flex-col w-full max-w-md items-center gap-6 ">
+      <div className="flex flex-col w-full max-w-sm items-center gap-6 ">
         <div className="flex flex-col items-center gap-2 w-full">
           <div className="w-24 h-24 apply-border-md background-rounded  flex items-center justify-center mb-2 bg-[#1B1D21] shadow-2xl ">
             <span className="text-4xl font-bold text-white/80">

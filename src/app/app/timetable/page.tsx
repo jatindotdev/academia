@@ -1,11 +1,18 @@
 "use client";
 import { useAttendance, useCalendar, useTimetable } from "@/hooks/query";
 import React, { useState } from "react";
-import { Loader, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { AttendanceDetail, DaySchedule } from "srm-academia-api";
+import { GlobalLoader } from "../components/loader";
 const Page = () => {
-  const data = useTimetable().data;
-  if (!data) return <div>Loading...</div>;
+  const { data, isPending } = useTimetable();
+  if (isPending) return <GlobalLoader className="h-10 w-10 text-blue-400" />;
+  if (!data)
+    return (
+      <div className="flex h-full w-full justify-center items-center">
+        No data found
+      </div>
+    );
   return <DayChange data={data} />;
 };
 
@@ -13,8 +20,8 @@ export default Page;
 
 const DayChange = ({ data }: { data: DaySchedule[] }) => {
   const day = data?.map((i) => i.dayOrder.split(" ")[1]);
-  const [today, setToday] = useState<number>(0);
-  const [dayOrder, setDayOrder] = useState<number>(today);
+  const [today, setToday] = useState<number>();
+  const [dayOrder, setDayOrder] = useState<number>(0);
   const {
     data: calendarData,
     isLoading: calendarLoading,
@@ -64,24 +71,20 @@ const DayChange = ({ data }: { data: DaySchedule[] }) => {
         <div className="flex  bg-white/5  px-1 py-0.5 rounded-full text-sm apply-border-sm">
           <h1 className=" px-2 py-0.5 text-sm ">Today</h1>
           <span
-            className={`px-2 py-0.5 rounded-full text-sm  apply-border-sm  backdrop-blur-3xl bg-black items-center flex ${
-              today === 0
-                ? !calendarLoading
-                  ? "text-red-400"
-                  : "text-white"
+            className={`px-2.5 py-0.5 rounded-full text-sm  apply-border-sm  backdrop-blur-3xl bg-black items-center flex ${
+              calendarLoading
+                ? "text-blue-400"
+                : today === 0 || calendarError
+                ? "text-red-400"
                 : "text-blue-400"
             }`}
           >
-            {today === 0 ? (
-              !calendarLoading ? (
-                !calendarError ? (
-                  "Holiday"
-                ) : (
-                  "Failed"
-                )
-              ) : (
-                <Loader className="w-4 h-4 animate-spin" />
-              )
+            {calendarLoading ? (
+              <GlobalLoader className="w-4 h-4" />
+            ) : calendarError ? (
+              "Failed"
+            ) : today === 0 ? (
+              "Holiday"
             ) : (
               today
             )}

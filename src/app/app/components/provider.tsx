@@ -47,7 +47,7 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
       persister: localStoragePersister,
       queryClient,
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      buster: "v2.0.0",
+      buster: "v1.0.0",
     });
   }
   const { isMobile } = useScreen();
@@ -69,7 +69,7 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
           <Sidebar />
         </div>
         <div className="flex-1 bg-black/30 rounded-lg apply-border-md flex flex-col w-full h-full ">
-          <MobileMenuBar />
+          <MenuBar />
           <LastUpdated />
           <div className="p-3 overflow-y-auto h-full w-full overflow-x-clip ">
             {children}
@@ -83,14 +83,14 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
 
 export default QueryProvider;
 
-const MobileMenuBar = () => {
+const MenuBar = () => {
   const path = usePathname().split("/");
   return (
     <div className="min-h-12 px-4 justify-between items-center flex text-lg  border-b border-slate-400/10">
       <span className="flex items-center gap-4">
         {useScreen().isMobile && (
           <span onClick={SidebarToggle}>
-            <PanelRightOpen className="w-5 h-5 " />
+            <PanelRightOpen className="w-5 h-5 cursor-pointer" />
           </span>
         )}
         <span className="capitalize">{path[path.length - 1]}</span>

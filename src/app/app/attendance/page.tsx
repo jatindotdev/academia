@@ -2,11 +2,17 @@
 import { useAttendance } from "@/hooks/query";
 import React from "react";
 import { AttendanceDetail } from "srm-academia-api";
+import { GlobalLoader } from "../components/loader";
 
 const Page = () => {
   const { data, isPending } = useAttendance();
-  if (isPending) return <div>Loading</div>;
-  if (!data) return <div>No data</div>;
+  if (isPending) return <GlobalLoader className="h-10 w-10 text-blue-400" />;
+  if (!data)
+    return (
+      <div className="flex h-full w-full justify-center items-center">
+        No data found
+      </div>
+    );
 
   return (
     <div className="flex flex-col gap-4 py-2 ">

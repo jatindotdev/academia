@@ -3,9 +3,16 @@ import { useCalendar } from "@/hooks/query";
 import React, { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { Month } from "srm-academia-api";
+import { GlobalLoader } from "../components/loader";
 const Page = () => {
-  const data = useCalendar().data;
-  if (!data) return <div>Loading...</div>;
+  const { data, isPending } = useCalendar();
+  if (isPending) return <GlobalLoader className="h-10 w-10 text-blue-400" />;
+  if (!data)
+    return (
+      <div className="flex h-full w-full justify-center items-center">
+        No data found
+      </div>
+    );
   return <DayChange data={data} />;
 };
 

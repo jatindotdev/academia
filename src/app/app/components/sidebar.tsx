@@ -1,8 +1,10 @@
-import { useScreen } from "@/hooks/zustand";
+import { useUserInfo } from "@/hooks/query";
 import { SidebarToggle } from "@/utils/sidebarToggle";
-import { X } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { GlobalLoader } from "./loader";
+import { X } from "lucide-react";
+import { useScreen } from "@/hooks/zustand";
 type MenuType = {
   name: string;
   url: string;
@@ -22,8 +24,17 @@ export default Sidebar;
 
 const Header = () => {
   return (
-    <div className="flex px-4 w-full min-h-12 items-center justify-center border-b border-white/5">
+    <div
+      className={`flex px-4 w-full min-h-12 items-center  border-b border-white/5 ${
+        useScreen().isMobile ? "justify-between" : "justify-center"
+      }`}
+    >
       <h1 className="text-lg tracking-wide">AcademiaX</h1>
+      {useScreen().isMobile && (
+        <div className="bg-white/5 rounded p-1 backdrop-blur-xs apply-border-sm hover:scale-95">
+          <X onClick={SidebarToggle} className="w-5 h-5 cursor-pointer " />
+        </div>
+      )}
     </div>
   );
 };
@@ -58,9 +69,27 @@ const Menu = () => {
 };
 
 const Footer = () => {
+  const { data, isPending } = useUserInfo();
+
   return (
-    <div className="min-h-12 flex items-center justify-center border-t border-white/5">
-      Footer
+    <div className="min-h-25 flex border-t border-white/5 w-full gap-4 items-center justify-center px-6 ">
+      {!isPending ? (
+        <div className="flex items-center justify-center gap-4 ">
+          <div className="w-10 h-10 flex items-center font-semibold apply-border-md background-rounded">
+            {data?.name
+              .split(" ")
+              .map((i) => i[0])
+              .join("")
+              .slice(0, 2)}
+          </div>
+          <div className="flex flex-col gap-2 w-full items-end ">
+            <h1>{data?.name}</h1>
+            <h1 className="text-white/60">{data?.regNumber}</h1>
+          </div>
+        </div>
+      ) : (
+        <GlobalLoader className="h-5 w-5" />
+      )}
     </div>
   );
 };
