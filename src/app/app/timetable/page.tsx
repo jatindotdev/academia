@@ -15,7 +15,11 @@ const DayChange = ({ data }: { data: DaySchedule[] }) => {
   const day = data?.map((i) => i.dayOrder.split(" ")[1]);
   const [today, setToday] = useState<number>(0);
   const [dayOrder, setDayOrder] = useState<number>(today);
-  const { data: calendarData } = useCalendar();
+  const {
+    data: calendarData,
+    isLoading: calendarLoading,
+    isError: calendarError,
+  } = useCalendar();
 
   React.useEffect(() => {
     if (calendarData) {
@@ -57,21 +61,30 @@ const DayChange = ({ data }: { data: DaySchedule[] }) => {
     <div className="w-full h-full flex flex-col overflow-hidden">
       <div className="w-full flex items-center justify-center gap-3 ">
         {/* Today */}
-        <div
-          onClick={() => {
-            if (dayOrder !== today) {
-              setDayOrder(today - 1);
-            }
-          }}
-          className="flex  bg-white/5  px-1 py-0.5 rounded-full text-sm apply-border-sm"
-        >
+        <div className="flex  bg-white/5  px-1 py-0.5 rounded-full text-sm apply-border-sm">
           <h1 className=" px-2 py-0.5 text-sm ">Today</h1>
           <span
-            className={`px-2 py-0.5 rounded-full text-sm  apply-border-sm  backdrop-blur-3xl bg-black ${
-              today === 0 ? "text-red-400" : "text-blue-400"
+            className={`px-2 py-0.5 rounded-full text-sm  apply-border-sm  backdrop-blur-3xl bg-black items-center flex ${
+              today === 0
+                ? !calendarLoading
+                  ? "text-red-400"
+                  : "text-white"
+                : "text-blue-400"
             }`}
           >
-            {today === 0 ? "Holiday" : today}
+            {today === 0 ? (
+              !calendarLoading ? (
+                !calendarError ? (
+                  "Holiday"
+                ) : (
+                  "Failed"
+                )
+              ) : (
+                <Loader className="w-4 h-4 animate-spin" />
+              )
+            ) : (
+              today
+            )}
           </span>
         </div>
       </div>
