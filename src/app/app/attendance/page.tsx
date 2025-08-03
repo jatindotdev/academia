@@ -62,7 +62,7 @@ const Data = ({
               <div className=" flex items-center justify-center w-[80%] h-full mx-auto  ">
                 {item.courseTitle}
               </div>
-              <div className="flex justify-between w-full px-2 min-h-12 items-center border-b border-white/5">
+              <div className="flex justify-between w-full px-2 min-h-12 items-center  ">
                 <h1 className=" px-3 py-1 rounded-full text-sm  apply-border-sm bg-black">
                   {item.courseCategory}
                 </h1>

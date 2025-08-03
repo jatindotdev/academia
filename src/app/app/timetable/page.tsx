@@ -1,11 +1,10 @@
 "use client";
-import { useAttendance, useTimetable } from "@/hooks/query";
+import { useAttendance, useCalendar, useTimetable } from "@/hooks/query";
 import React, { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Loader, Minus, Plus } from "lucide-react";
 import { AttendanceDetail, DaySchedule } from "srm-academia-api";
 const Page = () => {
   const data = useTimetable().data;
-
   if (!data) return <div>Loading...</div>;
   return <DayChange data={data} />;
 };
@@ -14,34 +13,96 @@ export default Page;
 
 const DayChange = ({ data }: { data: DaySchedule[] }) => {
   const day = data?.map((i) => i.dayOrder.split(" ")[1]);
-  const [dayOrder, setDayOrder] = useState<number>(0);
-  console.log(day[1]);
+  const [today, setToday] = useState<number>(0);
+  const [dayOrder, setDayOrder] = useState<number>(today);
+  const { data: calendarData } = useCalendar();
+
+  React.useEffect(() => {
+    if (calendarData) {
+      const now = new Date();
+      const monthsShort = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const formattedMonth = `${monthsShort[now.getMonth()]} '${String(
+        now.getFullYear()
+      ).slice(-2)}`;
+      const monthObj = calendarData.find((m) => m.month === formattedMonth);
+      if (monthObj) {
+        const todayDate = String(now.getDate());
+        const todayDay = monthObj.days.find((d) => d.date === todayDate);
+        if (todayDay) {
+          const todayDayOrder = Number(todayDay.dayOrder);
+          if (!isNaN(todayDayOrder)) {
+            console.log(todayDayOrder);
+            setToday(todayDayOrder);
+            setDayOrder(todayDayOrder - 1);
+          }
+        }
+      }
+    }
+  }, [calendarData]);
+
   return (
-    <div className="w-full h-full ">
-      <div className="my-5 relative max-w-80 mx-auto h-[15%] flex items-center justify-center text-5xl text-white/80 lg:text-6xl">
-        {day[dayOrder]}
+    <div className="w-full h-full flex flex-col overflow-hidden">
+      <div className="w-full flex items-center justify-center gap-3 ">
+        {/* Today */}
         <div
           onClick={() => {
-            if (dayOrder > 0) {
-              setDayOrder(dayOrder - 1);
+            if (dayOrder !== today) {
+              setDayOrder(today - 1);
             }
           }}
-          className="absolute top-1/2  -translate-y-1/2 left-15   bg-white/5  p-1 apply-border-sm rounded-lg cursor-pointer shadow-2xl"
+          className="flex  bg-white/5  px-1 py-0.5 rounded-full text-sm apply-border-sm"
         >
-          <Minus className="w-5 h-5" />
-        </div>
-        <div
-          onClick={() => {
-            if (dayOrder < day.length - 1) {
-              setDayOrder(dayOrder + 1);
-            }
-          }}
-          className="absolute top-1/2 -translate-y-1/2 right-15  bg-white/5  p-1 apply-border-sm rounded-lg cursor-pointer shadow-2xl"
-        >
-          <Plus className="w-5 h-5" />
+          <h1 className=" px-2 py-0.5 text-sm ">Today</h1>
+          <span
+            className={`px-2 py-0.5 rounded-full text-sm  apply-border-sm  backdrop-blur-3xl bg-black ${
+              today === 0 ? "text-red-400" : "text-blue-400"
+            }`}
+          >
+            {today === 0 ? "Holiday" : today}
+          </span>
         </div>
       </div>
-      <Data data={data} dayorder={dayOrder} />
+      <div className="w-full flex-shrink-0 h-[15%]  py-5">
+        <div className="relative max-w-100 mx-auto h-full flex items-center justify-center text-4xl text-white/80 lg:text-5xl">
+          {day[dayOrder]}
+          <div
+            onClick={() => {
+              if (dayOrder > 0) {
+                setDayOrder(dayOrder - 1);
+              }
+            }}
+            className="absolute top-1/2  -translate-y-1/2 left-15   bg-white/5  p-1 apply-border-sm rounded-lg cursor-pointer shadow-2xl"
+          >
+            <Minus className="w-5 h-5" />
+          </div>
+          <div
+            onClick={() => {
+              if (dayOrder < day.length - 1) {
+                setDayOrder(dayOrder + 1);
+              }
+            }}
+            className="absolute top-1/2 -translate-y-1/2 right-15  bg-white/5  p-1 apply-border-sm rounded-lg cursor-pointer shadow-2xl"
+          >
+            <Plus className="w-5 h-5" />
+          </div>
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto ">
+        <Data data={data} dayorder={dayOrder} />
+      </div>
     </div>
   );
 };
@@ -119,7 +180,7 @@ const Data = ({
 
 const AttendanceData = ({ attendance }: { attendance: AttendanceDetail }) => {
   return (
-    <div className="flex justify-between w-full px-2 min-h-12 items-center border-b border-white/5">
+    <div className="flex justify-between w-full px-2 min-h-12 items-center ">
       <h1
         className={`px-3 py-1 rounded-full text-sm  apply-border-sm bg-black ${
           Number(attendance.courseAttendance) <= 75
