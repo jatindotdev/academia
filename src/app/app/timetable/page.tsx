@@ -72,7 +72,7 @@ const Data = ({
                   <h1 className="background-rounded apply-border-sm">
                     {item.courseRoomNo}
                   </h1>
-                  <span className="background-rounded apply-border-sm ">
+                  <span className=" px-2 py-0.5 rounded-full text-sm apply-border-sm bg-black text-blue-400 ">
                     {item.courseType?.charAt(0)}
                   </span>
                   <span className="background-rounded apply-border-sm ">
