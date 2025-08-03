@@ -29,7 +29,7 @@ export function useScreen() {
     },
     () => {
       if (typeof window === "undefined") return true;
-      return window.innerWidth <= 1200;
+      return window.innerWidth <= 1560;
     },
     () => true
   );

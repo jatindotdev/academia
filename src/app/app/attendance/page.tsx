@@ -4,14 +4,15 @@ import React from "react";
 import { AttendanceDetail } from "srm-academia-api";
 
 const Page = () => {
-  const data = useAttendance().data;
+  const { data, isPending } = useAttendance();
+  if (isPending) return <div>Loading</div>;
   if (!data) return <div>No data</div>;
 
   return (
     <div className="flex flex-col gap-4 py-2 ">
-      <h1 className="text-2xl">Theory</h1>
+      <h1 className="text-2xl text-blue-400 ">Theory</h1>
       <Data data={data} category="theory" />
-      <h1 className="text-2xl">Practical</h1>
+      <h1 className="text-2xl text-blue-400">Practical</h1>
       <Data data={data} category="practical" />
     </div>
   );
@@ -66,10 +67,18 @@ const Data = ({
                   {item.courseCategory}
                 </h1>
                 <div className="flex gap-1 bg-white/5  pl-2 pr-1 py-0.5 rounded-full text-sm apply-border-sm items-center ">
-                  Margin
-                  <h1 className=" px-2 py-0.5 rounded-full text-sm  apply-border-sm bg-black text-red-400">
-                    {item.courseConducted}
+                  <h1 className="capitalize">
+                    {item.courseAttendanceStatus?.status}
                   </h1>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-sm  apply-border-sm bg-black ${
+                      item.courseAttendanceStatus?.status === "required"
+                        ? "text-red-400"
+                        : "text-green-400"
+                    }`}
+                  >
+                    {item.courseAttendanceStatus?.classes}
+                  </span>
                 </div>
               </div>
             </div>
