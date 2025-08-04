@@ -54,7 +54,9 @@ const Header = () => {
     >
       <div className="flex gap-4 items-center justify-center">
         <Image src={Icon} width={25} height={25} alt="icon" />
-        <h1 className="text-lg tracking-wide">AcademiaX</h1>
+        <h1 className="text-lg tracking-wide">
+          AcademiaX <span className="text-white/50 text-sm ">v2</span>
+        </h1>
       </div>
       {useScreen().isMobile && (
         <div className="bg-white/5 rounded p-1 backdrop-blur-xs apply-border-sm hover:scale-95">

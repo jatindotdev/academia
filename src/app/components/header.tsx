@@ -9,7 +9,9 @@ const Header = ({ value }: { value: string }) => {
         <div className="absolute inset-0 bg-blue-400/30 blur-3xl -z-10 " />
         <div className="flex gap-4 items-center justify-center">
           <Image src={Icon} width={25} height={25} alt="icon" />
-          <h1 className="text-lg tracking-wide">AcademiaX</h1>
+          <h1 className="text-lg tracking-wide">
+            AcademiaX <span className="text-white/50 text-sm ">v2</span>
+          </h1>
         </div>
         {value !== "root" ? (
           <Link
@@ -19,7 +21,12 @@ const Header = ({ value }: { value: string }) => {
             Back
           </Link>
         ) : (
-          <div></div>
+          <Link
+            href="/auth/login"
+            className="px-3 py-1.5 rounded-lg apply-border-md bg-white/5"
+          >
+            Login
+          </Link>
         )}
       </div>
     </div>
