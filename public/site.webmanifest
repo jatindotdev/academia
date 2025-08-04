@@ -1,6 +1,7 @@
 {
   "name": "AcademiaX",
   "short_name": "AcademiaX",
+  "description": "Discover a sleek and modern way to manage your academics - no clutter, just clarity.",
   "id": "/app/timetable",
   "start_url": "/app/timetable",
   "theme_color": "#16171b",

@@ -13,9 +13,36 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const description =
+  "Discover a sleek and modern way to manage your academics - no clutter, just clarity.";
 export const metadata: Metadata = {
-  title: "Academiax",
-  description: "A modern srm academia wrapper",
+  title: "AcademiaX SRM",
+  description,
+  authors: [{ name: "jackwaghan", url: "https://jackwaghan.com" }],
+  keywords: ["SRM", "Academia", "AcademiaX", "AcademiaX SRM", "SRM Academia"],
+  openGraph: {
+    title: "AcademiaX",
+    description,
+    url: "https://academiax.in",
+    siteName: "AcademiaX",
+    images: [
+      {
+        url: "https://academiax.in/Landing/BigScreen.png",
+        width: 1920,
+        height: 1080,
+        alt: "AcademiaX",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@academiax",
+    title: "AcademiaX",
+    description,
+    creator: "@jackwaghan",
+    images: ["https://academiax.in/Landing/BigScreen.png"],
+  },
 };
 
 export default function RootLayout({
