@@ -76,7 +76,9 @@ export const LoginComponent = () => {
   };
   return (
     <div className="flex-1 flex items-center justify-center px-6 lg:px-0">
-      <div className="max-w-5xl min-h-[50%] w-full rounded-lg grid grid-cols-1 lg:grid-cols-2 bg-[#1B1D21] apply-border-md ">
+      <div className="relative max-w-5xl min-h-[50%] w-full rounded-2xl grid grid-cols-1 lg:grid-cols-2 bg-white/5 apply-border-md backdrop-blur-xs">
+        <div className="absolute inset-0 bg-blue-400/30 blur-3xl -z-10 " />
+
         <div className="flex items-center justify-center min-h-20 lg:text-4xl h-full text-2xl ">
           Login
         </div>
@@ -92,7 +94,7 @@ export const LoginComponent = () => {
                   id="name"
                   name="name"
                   type="name"
-                  className="w-full px-4 py-2 rounded-md bg-white/5 border apply-border-md focus:outline-none focus:ring-2 focus:ring-white/20"
+                  className="w-full px-4 py-2 rounded-xl  bg-white/5 border apply-border-md focus:outline-none focus:ring-2 focus:ring-white/20"
                   placeholder="SRM Mail ID"
                   autoComplete="email"
                   autoFocus
@@ -106,7 +108,7 @@ export const LoginComponent = () => {
                     id="password"
                     name="password"
                     type={eyeOpen ? "name" : "password"}
-                    className=" w-full px-4 py-2 rounded-md bg-white/5 border apply-border-md focus:outline-none focus:ring-2 focus:ring-white/20"
+                    className=" w-full px-4 py-2 rounded-xl bg-white/5 border apply-border-md focus:outline-none focus:ring-2 focus:ring-white/20"
                     placeholder="Password"
                     autoComplete="current-password"
                     autoFocus
@@ -132,7 +134,7 @@ export const LoginComponent = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5  bg-black  text-white flex items-center justify-center border border-white/15 hover:bg-[#23252a] hover:border-white/5 transition rounded-lg cursor-pointer"
+              className="w-full py-2.5  bg-black  text-white flex items-center justify-center border border-white/15 hover:bg-[#23252a] hover:border-white/5 transition rounded-xl cursor-pointer"
             >
               {loading ? <Loader className="w-5 h-5 " /> : "Authenticate"}
             </button>

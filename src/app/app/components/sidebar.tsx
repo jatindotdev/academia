@@ -23,6 +23,9 @@ import {
 } from "lucide-react";
 import { useScreen } from "@/hooks/zustand";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import Icon from "@/../public/favicon.svg";
+
 type MenuType = {
   name: string;
   url: string;
@@ -45,11 +48,14 @@ export default Sidebar;
 const Header = () => {
   return (
     <div
-      className={`flex px-4 w-full min-h-12 items-center  border-b border-white/5 ${
+      className={`flex px-4 w-full min-h-12 items-center  border-b border-white/5 gap-4 ${
         useScreen().isMobile ? "justify-between" : "justify-center"
       }`}
     >
-      <h1 className="text-lg tracking-wide">AcademiaX</h1>
+      <div className="flex gap-4 items-center justify-center">
+        <Image src={Icon} width={25} height={25} alt="icon" />
+        <h1 className="text-lg tracking-wide">AcademiaX</h1>
+      </div>
       {useScreen().isMobile && (
         <div className="bg-white/5 rounded p-1 backdrop-blur-xs apply-border-sm hover:scale-95">
           <X onClick={SidebarToggle} className="w-5 h-5 cursor-pointer " />
@@ -128,7 +134,7 @@ const Status = () => {
   ];
   return (
     <div className="min-h-50 w-full p-3">
-      <div className=" bg-white/5 apply-border-md rounded-lg flex flex-col gap-4 px-1 py-2 text-white/60 ">
+      <div className=" bg-white/5  apply-border-md rounded-lg flex flex-col gap-4 px-1 py-2 text-white/60 ">
         {item.map((item, i) => {
           return (
             <div

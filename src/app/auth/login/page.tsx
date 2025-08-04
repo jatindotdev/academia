@@ -7,7 +7,7 @@ const page = async () => {
   if (cookie) redirect("/app/timetable");
   return (
     <div className="w-dvw h-dvh flex flex-col overflow-hidden">
-      <Header />
+      <Header value="login" />
       <LoginComponent />
     </div>
   );

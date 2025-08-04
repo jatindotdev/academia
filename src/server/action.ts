@@ -34,36 +34,36 @@ export async function getLogout(cookie: string) {
 
 export async function timetable(cookie: string) {
   const data = await getTimetable(cookie);
-  if (data.status === 404) redirect("/auth/login");
+  if (data.status === 404) redirect("/auth/logout");
   return { data };
 }
 
 export async function attendance(cookie: string) {
   const data = await getAttendance(cookie);
-  if (data.status === 404) redirect("/auth/login");
+  if (data.status === 404) redirect("/auth/logout");
   return { data };
 }
 
 export async function marks(cookie: string) {
   const data = await getMarks(cookie);
-  if (data.status === 404) redirect("/auth/login");
+  if (data.status === 404) redirect("/auth/logout");
   return { data };
 }
 
 export async function Calendar(cookie: string) {
   const data = await getCalendar(cookie);
-  if (data.status === 404) redirect("/auth/login");
+  if (data.status === 404) redirect("/auth/logout");
   return { data };
 }
 
 export async function Course(cookie: string) {
   const data = await getCourse(cookie);
-  if (data.status === 404) redirect("/auth/login");
+  if (data.status === 404) redirect("/auth/logout");
   return { data };
 }
 
 export async function userInfo(cookie: string) {
   const data = await getUserInfo(cookie);
-  if (data.status === 404) redirect("/auth/login");
+  if (data.status === 404) redirect("/auth/logout");
   return { data };
 }
