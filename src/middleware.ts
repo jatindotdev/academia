@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getCookie } from "./utils/getCookieServer";
 
-export const runtime = "edge";
+export const runtime = "experimental-edge";
 
 export async function middleware(request: NextRequest) {
   const cookie = await getCookie();

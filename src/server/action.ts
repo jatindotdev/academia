@@ -13,8 +13,6 @@ import {
   logoutUser,
 } from "srm-academia-api";
 
-export const runtime = "edge";
-
 export async function validateUser(email: string) {
   const res = await verifyUser(email);
   return { res };
