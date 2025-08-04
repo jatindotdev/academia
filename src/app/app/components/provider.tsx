@@ -61,8 +61,10 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
           ref={isOpen && isMobile ? myDivRef : null}
           className={`${
             isMobile
-              ? `z-10 fixed inset-y-2 bg-white/5 backdrop-blur-xl rounded-lg transform-gpu transition-transform duration-300 min-w-64 ${
-                  isOpen ? "translate-x-0" : "-translate-x-96"
+              ? `z-10 fixed inset-y-2 bg-white/5 backdrop-blur-xl rounded-lg  min-w-64 ${
+                  isOpen
+                    ? "translate-x-0 transform-gpu transition-transform duration-300"
+                    : "-translate-x-96"
                 } `
               : "min-w-76"
           } `}

@@ -110,6 +110,7 @@ const Menu = () => {
             key={i.name}
             href={i.url}
             onClick={SidebarToggle}
+            prefetch={false}
             className={`flex gap-3 justify-between px-4 py-2 capitalize ${
               i.url === path
                 ? "apply-border-sm bg-white/5  rounded-lg text-blue-400"
@@ -137,6 +138,9 @@ const Status = () => {
   return (
     <div className="min-h-50 w-full p-3">
       <div className=" bg-white/5  apply-border-md rounded-lg flex flex-col gap-4 px-1 py-2 text-white/60 ">
+        <h1 className="w-full text-center p-2  border-b border-white/5">
+          Status
+        </h1>
         {item.map((item, i) => {
           return (
             <div

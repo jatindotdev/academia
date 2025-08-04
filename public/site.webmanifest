@@ -5,7 +5,7 @@
   "id": "/app/timetable",
   "start_url": "/app/timetable",
   "theme_color": "#16171b",
-  "background_color": "#000000",
+  "background_color": "#16171b",
   "display": "standalone",
   "icons": [
     {
