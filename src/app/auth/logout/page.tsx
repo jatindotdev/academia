@@ -16,9 +16,9 @@ const Page = () => {
         Object.keys(Cookies.get()).forEach((cookieName) => {
           Cookies.remove(cookieName);
         });
-        window.localStorage.clear();
-        return redirect("/auh/login");
       }
+      window.localStorage.clear();
+      return redirect("/auh/login");
     };
     Clear();
   }, []);
