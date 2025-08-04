@@ -1,7 +1,5 @@
-// app/app/layout.tsx
-
 import { Metadata } from "next";
-
+export const runtime = "edge";
 export const metadata: Metadata = {
   title: "Login",
   description: "Login Page for Authentication",

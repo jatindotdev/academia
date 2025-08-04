@@ -1,7 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getCookie } from "./utils/getCookieServer";
 
-// This function can be marked `async` if using `await` inside
+export const runtime = "edge";
+
 export async function middleware(request: NextRequest) {
   const cookie = await getCookie();
   if (!cookie)

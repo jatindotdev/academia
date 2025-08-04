@@ -1,6 +1,8 @@
 import React from "react";
 import { Loader } from "./components/loader";
 
+export const runtime = "edge";
+
 export default function Loading() {
   return (
     <div className="flex w-full h-full items-center justify-center ">
