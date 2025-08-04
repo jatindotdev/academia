@@ -55,7 +55,6 @@ const DayChange = ({ data }: { data: DaySchedule[] }) => {
         if (todayDay) {
           const todayDayOrder = Number(todayDay.dayOrder);
           if (!isNaN(todayDayOrder)) {
-            console.log(todayDayOrder);
             setToday(todayDayOrder);
             setDayOrder(todayDayOrder - 1);
           }
