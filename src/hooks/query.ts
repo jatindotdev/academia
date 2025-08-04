@@ -25,7 +25,7 @@ export function useTimetable() {
       if (data.error) throw new Error(data.error);
       return data.timetable as DaySchedule[];
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 }
 
@@ -37,7 +37,7 @@ export function useAttendance() {
       if (data.error) throw new Error(data.error);
       return data.attendance as AttendanceDetail[];
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 30, // 30 minutes
   });
 }
 
@@ -49,7 +49,7 @@ export function useMarks() {
       if (data.error) throw new Error(data.error);
       return data.markList as MarkDetail[];
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 30, // 30 minutes
   });
 }
 
@@ -61,7 +61,7 @@ export function useUserInfo() {
       if (data.error) throw new Error(data.error);
       return data.userInfo as UserInfo;
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 }
 
@@ -73,7 +73,7 @@ export function useCourse() {
       if (data.error) throw new Error(data.error);
       return data.courseList as CourseDetail[];
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 }
 
@@ -85,6 +85,6 @@ export function useCalendar() {
       if (data.error) throw new Error(data.error);
       return data.calendar as Month[];
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 }

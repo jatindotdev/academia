@@ -47,8 +47,8 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
     persistQueryClient({
       persister: localStoragePersister,
       queryClient,
-      maxAge: 1000 * 60 * 60 * 24 * 30,
-      buster: "v1.0.0",
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+      buster: "v1.0.1",
     });
   }
   const { isMobile } = useScreen();
