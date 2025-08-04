@@ -1,7 +1,6 @@
 "use client";
 
 import { Loader } from "@/app/app/components/loader";
-import { useAuth } from "@/hooks/zustand";
 import { getLogout } from "@/server/action";
 import { getCookie } from "@/utils/getCookieClient";
 import { redirect } from "next/navigation";
@@ -14,9 +13,12 @@ const Page = () => {
       const cookie = getCookie();
       if (cookie) {
         await getLogout(cookie);
-        Cookies.remove("token");
+        Object.keys(Cookies.get()).forEach((cookieName) => {
+          Cookies.remove(cookieName);
+        });
+        window.localStorage.clear();
+        return redirect("/auh/login");
       }
-      return redirect("/auh/login");
     };
     Clear();
   }, []);

@@ -1,6 +1,6 @@
 "use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "./sidebar";
 import LastUpdated from "./lastUpdated";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -8,8 +8,9 @@ import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persi
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { useScreen, useSidebar } from "@/hooks/zustand";
 import { usePathname } from "next/navigation";
-import { PanelRightOpen } from "lucide-react";
+import { LogOut, PanelRightOpen, ShieldAlert } from "lucide-react";
 import { SidebarToggle } from "@/utils/sidebarToggle";
+import { useUserInfo } from "@/hooks/query";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -86,7 +87,7 @@ export default QueryProvider;
 const MenuBar = () => {
   const path = usePathname().split("/");
   return (
-    <div className="min-h-12 px-4 justify-between items-center flex text-lg  border-b border-slate-400/10">
+    <div className="min-h-14 px-4 justify-between items-center flex text-lg  border-b border-slate-400/10">
       <span className="flex items-center gap-4">
         {useScreen().isMobile && (
           <span onClick={SidebarToggle}>
@@ -95,7 +96,84 @@ const MenuBar = () => {
         )}
         <span className="capitalize">{path[path.length - 1]}</span>
       </span>
-      <h1>Share</h1>
+      <ProfileIcon />
+    </div>
+  );
+};
+
+const ProfileIcon = () => {
+  const [toggle, setToggle] = useState(false);
+  const { data } = useUserInfo();
+  const iconRef = useRef<HTMLDivElement>(null);
+  const dropRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!toggle) return;
+
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropRef.current &&
+        !dropRef.current.contains(event.target as Node) &&
+        iconRef.current &&
+        !iconRef.current.contains(event.target as Node)
+      ) {
+        setToggle(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [toggle]);
+
+  return (
+    <div
+      ref={iconRef}
+      className="relative w-10 h-10 shadow-2xl flex items-center justify-center font-semibold apply-border-md background-rounded cursor-pointer"
+      onClick={() => setToggle((prev) => !prev)}
+    >
+      {data?.name
+        ?.split(" ")
+        .map((i) => i[0])
+        .join("")
+        .slice(0, 2)}
+      {toggle && (
+        <ProfileDrop dropRef={dropRef as React.RefObject<HTMLDivElement>} />
+      )}
+    </div>
+  );
+};
+
+const ProfileDrop = ({
+  dropRef,
+}: {
+  dropRef: React.RefObject<HTMLDivElement>;
+}) => {
+  return (
+    <div
+      ref={dropRef}
+      className="absolute top-12 right-0 w-48  bg-white/5 backdrop-blur-sm apply-border-md rounded-xl z-50 flex flex-col shadow-2xl overflow-hidden"
+    >
+      <a
+        href="https://chat.whatsapp.com/B6a15jYEKgI1UD7QzX39cM"
+        target="_blank"
+        className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5"
+      >
+        <span>Support</span>
+        <span>
+          <ShieldAlert className="w-5 h-5" />
+        </span>
+      </a>
+      <a
+        href="/auth/logout"
+        className="w-full px-4 py-3 flex justify-between items-center font-medium text-red-400 hover:bg-white/10 transition-colors focus:outline-none"
+      >
+        <span>Log Out</span>
+        <span>
+          <LogOut className="w-5 h-5" />
+        </span>
+      </a>
     </div>
   );
 };

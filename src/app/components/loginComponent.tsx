@@ -26,6 +26,11 @@ export const LoginComponent = () => {
         setLoading(false);
         return;
       }
+      if (res.data?.status_code === 500) {
+        setError("You reached Maximum Login");
+        setLoading(false);
+        return;
+      }
       if (res.error) {
         setError(res.errorReason as string);
         setLoading(false);

@@ -15,7 +15,6 @@ import {
 
 export async function validateUser(email: string) {
   const res = await verifyUser(email);
-  console.log(res);
   return { res };
 }
 

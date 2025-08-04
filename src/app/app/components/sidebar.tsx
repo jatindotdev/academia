@@ -1,20 +1,40 @@
-import { useUserInfo } from "@/hooks/query";
+import {
+  useAttendance,
+  useCalendar,
+  useCourse,
+  useMarks,
+  useTimetable,
+  useUserInfo,
+} from "@/hooks/query";
 import { SidebarToggle } from "@/utils/sidebarToggle";
 import Link from "next/link";
 import React from "react";
-import { GlobalLoader } from "./loader";
-import { X } from "lucide-react";
+import { Loader } from "./loader";
+import {
+  BookCopy,
+  BookOpenText,
+  Calendar1,
+  CalendarClock,
+  CircleCheck,
+  CircleUserRound,
+  CircleX,
+  Hourglass,
+  X,
+} from "lucide-react";
 import { useScreen } from "@/hooks/zustand";
+import { usePathname } from "next/navigation";
 type MenuType = {
   name: string;
   url: string;
+  icon: React.JSX.Element;
 }[];
 const Sidebar = () => {
   return (
-    <div className="relative h-full w-full flex flex-col rounded-lg bg-black/30 apply-border-md shadow">
+    <div className="relative h-full w-full flex flex-col rounded-lg bg-black/30 apply-border-md shadow ">
       <Header />
       <Menu />
-      <Footer />
+      <Status />
+      {/* <Footer /> / */}
       {/* <div className="absolute inset-0 bg-blue-500/30 blur-3xl -z-50"></div> */}
     </div>
   );
@@ -40,27 +60,56 @@ const Header = () => {
 };
 
 const Menu = () => {
+  const path = usePathname();
   const item: MenuType = [
-    { name: "timetable", url: "/app/timetable" },
-    { name: "attendance", url: "/app/attendance" },
-    { name: "marks", url: "/app/marks" },
-    { name: "course", url: "/app/course" },
-    { name: "calendar", url: "/app/calendar" },
-    { name: "profile", url: "/app/profile" },
+    {
+      name: "timetable",
+      url: "/app/timetable",
+      icon: <Hourglass className="w-5 h-5" />,
+    },
+    {
+      name: "attendance",
+      url: "/app/attendance",
+      icon: <CalendarClock className="w-5 h-5" />,
+    },
+    {
+      name: "marks",
+      url: "/app/marks",
+      icon: <BookOpenText className="w-5 h-5 " />,
+    },
+    {
+      name: "course",
+      url: "/app/course",
+      icon: <BookCopy className="w-5 h-5" />,
+    },
+    {
+      name: "calendar",
+      url: "/app/calendar",
+      icon: <Calendar1 className="w-5 h-5" />,
+    },
+    {
+      name: "profile",
+      url: "/app/profile",
+      icon: <CircleUserRound className="w-5 h-5" />,
+    },
   ];
 
   return (
-    <div className="px-3 py-3  flex-1 flex-col overflow-y-auto space-y-2 ">
+    <div className="px-3 py-3 flex-1 flex-col overflow-y-auto space-y-2 ">
       {item.map((i) => {
         return (
           <Link
             key={i.name}
             href={i.url}
             onClick={SidebarToggle}
-            className="flex gap-3 justify-between px-4 py-1.5 rounded-md capitalize apply-border-sm bg-[#16171b] "
+            className={`flex gap-3 justify-between px-4 py-1.5 capitalize ${
+              i.url === path
+                ? "apply-border-sm bg-white/5  rounded-lg text-blue-400"
+                : "text-white/50"
+            } `}
           >
             <h1>{i.name}</h1>
-            <span>Icon</span>
+            <span>{i.icon}</span>
           </Link>
         );
       })}
@@ -68,28 +117,44 @@ const Menu = () => {
   );
 };
 
-const Footer = () => {
-  const { data, isPending } = useUserInfo();
-
+const Status = () => {
+  const item = [
+    { name: "timetable", query: useTimetable() },
+    { name: "attendance", query: useAttendance() },
+    { name: "marks", query: useMarks() },
+    { name: "course", query: useCourse() },
+    { name: "calendar", query: useCalendar() },
+    { name: "profile", query: useUserInfo() },
+  ];
   return (
-    <div className="min-h-25 flex border-t border-white/5 w-full gap-4 items-center justify-center px-6 ">
-      {!isPending ? (
-        <div className="flex items-center justify-center gap-4 ">
-          <div className="w-10 h-10 flex items-center font-semibold apply-border-md background-rounded">
-            {data?.name
-              .split(" ")
-              .map((i) => i[0])
-              .join("")
-              .slice(0, 2)}
-          </div>
-          <div className="flex flex-col gap-2 w-full items-end ">
-            <h1>{data?.name}</h1>
-            <h1 className="text-white/60">{data?.regNumber}</h1>
-          </div>
-        </div>
-      ) : (
-        <GlobalLoader className="h-5 w-5" />
-      )}
+    <div className="min-h-50 w-full p-3">
+      <div className=" bg-white/5 apply-border-md rounded-lg flex flex-col gap-4 px-1 py-2 text-white/60 ">
+        {item.map((item, i) => {
+          return (
+            <div
+              key={i}
+              className="w-full flex px-3 items-center justify-between"
+            >
+              <h1 className="capitalize ">{item.name}</h1>
+              <span>
+                {item.query.isPending || item.query.isRefetching ? (
+                  <div>
+                    <Loader className="w-5 h-5" />
+                  </div>
+                ) : item.query.isError ? (
+                  <div>
+                    <CircleX className="w-5 h-5 text-red-400" />
+                  </div>
+                ) : (
+                  <div>
+                    <CircleCheck className="w-5 h-5 text-green-400" />
+                  </div>
+                )}
+              </span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
