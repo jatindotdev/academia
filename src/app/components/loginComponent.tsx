@@ -1,10 +1,11 @@
 "use client";
 import { useAuth } from "@/hooks/zustand";
 import { validatePassword, validateUser } from "@/server/action";
-import { Eye, EyeOff, Loader } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import { Loader } from "../app/components/loader";
 
 export const LoginComponent = () => {
   const [eyeOpen, setEyeOpen] = useState(false);
@@ -19,7 +20,6 @@ export const LoginComponent = () => {
 
     if (hash1) {
       const { res } = await validateUser(hash1);
-      console.log(res);
       if (res.data?.status_code === 400) {
         setError(res.data?.message as string);
         setLoading(false);
@@ -44,7 +44,6 @@ export const LoginComponent = () => {
       identifier: email.identifier,
       password: hash2,
     });
-    console.log(res);
 
     if (res.data?.statusCode === 500 || res.data?.captcha?.required) {
       if (res.data?.captcha?.required) {
