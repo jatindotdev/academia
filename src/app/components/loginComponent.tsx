@@ -10,6 +10,7 @@ import { Loader } from "../app/components/loader";
 export const LoginComponent = () => {
   const [eyeOpen, setEyeOpen] = useState(false);
   const { error, setError, loading, setLoading, setEmail, email } = useAuth();
+
   const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -61,8 +62,8 @@ export const LoginComponent = () => {
       return;
     }
 
-    if (res.isAuthenticated && res.data?.cookies) {
-      Cookies.set("token", res.data?.cookies, { expires: 30, path: "/" });
+    if (res.isAuthenticated && typeof res.data?.cookies === "string") {
+      Cookies.set("token", res.data.cookies, { expires: 30, path: "/" });
       return redirect("/app/timetable");
     }
     setLoading(false);

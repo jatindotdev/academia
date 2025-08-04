@@ -6,9 +6,6 @@ type SidebarState = {
 };
 
 export type UseAuthType = {
-  user: boolean;
-  logout: () => void;
-  login: () => void;
   email: {
     digest: string;
     identifier: string;
@@ -21,9 +18,6 @@ export type UseAuthType = {
 };
 
 export const useAuth = create<UseAuthType>((set) => ({
-  user: false,
-  logout: () => set((state) => ({ ...state, user: false })),
-  login: () => set((state) => ({ ...state, user: true })),
   email: {
     digest: "",
     identifier: "",

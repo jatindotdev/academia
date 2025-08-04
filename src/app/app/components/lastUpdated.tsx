@@ -41,7 +41,11 @@ const LastUpdated = () => {
 
   return (
     <div className="w-full min-h-10 border-b border-slate-400/10 flex px-4 items-center justify-between ">
-      <h1 className="text-white/50">Last updated {lastUpdated} ago </h1>
+      {query.isRefetching ? (
+        <h1 className="text-white/50">Fetching</h1>
+      ) : (
+        <h1 className="text-white/50">Last updated {lastUpdated} ago </h1>
+      )}
       <span className="cursor-pointer ">
         {query.isRefetching ? (
           <Loader className="w-4 h-4" />

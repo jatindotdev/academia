@@ -10,6 +10,7 @@ import {
   PasswordInput,
   verifyPassword,
   verifyUser,
+  logoutUser,
 } from "srm-academia-api";
 
 export async function validateUser(email: string) {
@@ -24,6 +25,11 @@ export async function validatePassword({
   password,
 }: PasswordInput) {
   const res = await verifyPassword({ digest, identifier, password });
+  return { res };
+}
+
+export async function getLogout(cookie: string) {
+  const res = await logoutUser(cookie);
   return { res };
 }
 
