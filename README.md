@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AcademiaX v2
 
-## Getting Started
+A modern, sleek web application that provides a better alternative to the traditional SRM Portal for managing academic information.
 
-First, run the development server:
+![AcademiaX Landing Page](public/Landing/BigScreen.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+
+- **Timetable Management** - View and manage your class schedule
+- **Attendance Tracking** - Monitor your attendance records
+- **Course Information** - Access detailed course materials and information
+- **Marks & Grades** - View your academic performance
+- **Calendar Integration** - Academic calendar with important dates
+- **Profile Management** - Personal academic profile
+- **Secure Authentication** - Safe login and logout functionality
+- **Responsive Design** - Works seamlessly on desktop and mobile devices
+- **Modern UI/UX** - Clean, intuitive interface with smooth animations
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **State Management**: Zustand
+- **Data Fetching**: TanStack Query (React Query)
+- **Icons**: Lucide React & React Icons
+- **API**: srm-academia-api package
+- **Authentication**: Cookie-based auth with js-cookie
+- **Development**: ESLint, Turbopack
+
+## Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/jackwaghan/academiax.git
+   cd academiax
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   bun install
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   bun dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
+
+## Project Structure
+
+```
+academiax/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── app/               # Main application routes
+│   │   │   ├── attendance/    # Attendance tracking
+│   │   │   ├── calendar/      # Academic calendar
+│   │   │   ├── course/        # Course information
+│   │   │   ├── marks/         # Grades and marks
+│   │   │   ├── profile/       # User profile
+│   │   │   ├── timetable/     # Class schedule
+│   │   │   └── components/    # Shared components
+│   │   ├── auth/              # Authentication pages
+│   │   └── components/        # Global components
+│   ├── hooks/                 # Custom React hooks
+│   ├── server/                # Server actions
+│   └── utils/                 # Utility functions
+├── public/                    # Static assets
+└── package.json              # Dependencies and scripts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Key Features Explained
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Modern Dashboard
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Clean interface that replaces the traditional SRM Portal
+- Real-time data updates with React Query
+- Responsive design that works on all devices
 
-## Learn More
+### Academic Management
 
-To learn more about Next.js, take a look at the following resources:
+- **Timetable**: View your daily class schedule with ease
+- **Attendance**: Track your attendance percentage across all courses
+- **Marks**: Monitor your academic performance and grades
+- **Courses**: Access detailed course information
+- **Calendar**: Academic calendar with important dates and events
+- **Profile**: Academic Student information
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔧 Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `npm run dev` - Start development server with Turbopack
+- `npm run build` - Build the application for production
+- `npm run start` - Start the production server
+- `npm run lint` - Run ESLint for code quality
 
-## Deploy on Vercel
+## 🌐 API Integration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This application uses the `srm-academia-api` package to interact with SRM University's backend services. The API provides secure access to:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Student authentication
+- Academic data retrieval
+- Real-time updates
+
+## 📄 License
+
+This project is licensed under the Creative Commons Attribution 4.0 International License - see the [LICENSE-CC-BY-4.0](LICENSE-CC-BY-4.0) file for details.
+
+## 🔗 Links
+
+- **GitHub Repository**: [https://github.com/jackwaghan/academiax](https://github.com/jackwaghan/academiax)
+- **NPM Package**: [https://www.npmjs.com/package/srm-academia-api](https://www.npmjs.com/package/srm-academia-api)
+- **AcademiaX**: [https://academiax.in](https://academiax.in)
