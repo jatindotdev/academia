@@ -39,7 +39,7 @@ const Content = () => {
         <a
           href="https://github.com/jackwaghan/academiax"
           target="_blank"
-          className="px-5 py-2 rounded-lg apply-border-md bg-white/5 gap-4 flex items-center justify-between "
+          className="px-5 py-2 rounded-lg  bg-white/5 gap-4 flex items-center justify-between apply-inner-shadow-md"
         >
           <h1>Github</h1>
           <Github className="w-5 h-5" />
@@ -47,7 +47,7 @@ const Content = () => {
         <a
           href="https://www.npmjs.com/package/srm-academia-api"
           target="_blank"
-          className="px-5 py-2 rounded-lg apply-border-md bg-white/5 flex items-center justify-between gap-4 "
+          className="px-5 py-2 rounded-lg apply-inner-shadow-md  bg-white/5 flex items-center justify-between gap-4 "
         >
           <h1>NPM Docs</h1>
           <TbBrandNpm className="w-5 h-5" />

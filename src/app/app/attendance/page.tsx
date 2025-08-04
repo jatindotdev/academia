@@ -42,7 +42,7 @@ const Data = ({
         return (
           <div
             key={i}
-            className="flex flex-col items-center gap-3 rounded-xl apply-border-md bg-[#16171b] min-h-50 shadow-2xl "
+            className="flex flex-col items-center gap-3 rounded-xl apply-border-md bg-[#16171b] min-h-50 shadow-2xl  "
           >
             <div className="w-full h-full text-white/70  flex flex-col gap-4 ">
               <div className="flex justify-between w-full px-2 min-h-12 items-center border-b border-white/5">

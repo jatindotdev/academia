@@ -33,4 +33,13 @@ body {
   .background-rounded {
     @apply bg-white/5  px-2 py-0.5 rounded-full text-sm;
   }
+  .apply-inner-shadow-sm {
+    @apply inset-shadow-sm inset-shadow-white/15;
+  }
+  .apply-inner-shadow-md {
+    @apply inset-shadow-sm inset-shadow-white/25;
+  }
+  .apply-inner-shadow-xs {
+    @apply inset-shadow-sm inset-shadow-white/5;
+  }
 }

@@ -23,13 +23,13 @@
   "screenshots": [
     {
       "src": "/Landing/SmallScreen.png",
-      "sizes": "774x1442",
+      "sizes": "762x1668",
       "type": "image/png",
       "form_factor": "narrow"
     },
     {
       "src": "/Landing/BigScreen.png",
-      "sizes": "3840x1906",
+      "sizes": "3830x1908",
       "type": "image/png",
       "form_factor": "wide"
     }
