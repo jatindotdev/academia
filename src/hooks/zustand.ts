@@ -1,20 +1,39 @@
 import { create } from "zustand";
 
-type AuthType = {
-  user: boolean;
-  logout: () => void;
-  login: () => void;
-};
-
 type SidebarState = {
   isOpen: boolean;
   setOpen: (open: boolean) => void;
 };
 
-export const useAuth = create<AuthType>((set) => ({
+export type UseAuthType = {
+  user: boolean;
+  logout: () => void;
+  login: () => void;
+  email: {
+    digest: string;
+    identifier: string;
+  };
+  setEmail: (email: { digest: string; identifier: string }) => void;
+  error: string;
+  setError: (error: string) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => void;
+};
+
+export const useAuth = create<UseAuthType>((set) => ({
   user: false,
-  logout: () => set(() => ({ user: false })),
-  login: () => set(() => ({ user: true })),
+  logout: () => set((state) => ({ ...state, user: false })),
+  login: () => set((state) => ({ ...state, user: true })),
+  email: {
+    digest: "",
+    identifier: "",
+  },
+  setEmail: (email: { digest: string; identifier: string }) =>
+    set((state) => ({ ...state, email })),
+  error: "",
+  setError: (error: string) => set((state) => ({ ...state, error })),
+  loading: false,
+  setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),
 }));
 
 import { useSyncExternalStore } from "react";
