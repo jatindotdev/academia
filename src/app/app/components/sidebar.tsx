@@ -1,23 +1,13 @@
-import {
-  useAttendance,
-  useCalendar,
-  useCourse,
-  useMarks,
-  useTimetable,
-  useUserInfo,
-} from "@/hooks/query";
+import { useUserInfo } from "@/hooks/query";
 import { SidebarToggle } from "@/utils/sidebarToggle";
 import Link from "next/link";
 import React from "react";
-import { Loader } from "./loader";
 import {
   BookCopy,
   BookOpenText,
   Calendar1,
   CalendarClock,
-  CircleCheck,
   CircleUserRound,
-  CircleX,
   Hourglass,
   X,
 } from "lucide-react";
@@ -36,9 +26,10 @@ const Sidebar = () => {
     <div className="relative h-full w-full flex flex-col rounded-lg bg-black/30 apply-border-md shadow ">
       <Header />
       <Menu />
-      <Status />
+      {/* <Status /> */}
       {/* <Footer /> / */}
       {/* <div className="absolute inset-0 bg-blue-500/30 blur-3xl -z-50"></div> */}
+      <Footer />
     </div>
   );
 };
@@ -126,46 +117,58 @@ const Menu = () => {
   );
 };
 
-const Status = () => {
-  const item = [
-    { name: "timetable", query: useTimetable() },
-    { name: "attendance", query: useAttendance() },
-    { name: "marks", query: useMarks() },
-    { name: "course", query: useCourse() },
-    { name: "calendar", query: useCalendar() },
-    { name: "profile", query: useUserInfo() },
-  ];
+// const Status = () => {
+//   const item = [
+//     { name: "timetable", query: useTimetable() },
+//     { name: "attendance", query: useAttendance() },
+//     { name: "marks", query: useMarks() },
+//     { name: "course", query: useCourse() },
+//     { name: "calendar", query: useCalendar() },
+//     { name: "profile", query: useUserInfo() },
+//   ];
+//   return (
+//     <div className="min-h-50 w-full p-3">
+//       <div className=" bg-white/5  apply-border-md rounded-lg flex flex-col gap-4 px-1 py-2 text-white/60 ">
+//         <h1 className="w-full text-center p-2  border-b border-white/5">
+//           Status
+//         </h1>
+//         {item.map((item, i) => {
+//           return (
+//             <div
+//               key={i}
+//               className="w-full flex px-3 items-center justify-between"
+//             >
+//               <h1 className="capitalize ">{item.name}</h1>
+//               <span>
+//                 {item.query.isPending || item.query.isRefetching ? (
+//                   <div>
+//                     <Loader className="w-5 h-5" />
+//                   </div>
+//                 ) : item.query.isError ? (
+//                   <div>
+//                     <CircleX className="w-5 h-5 text-red-400" />
+//                   </div>
+//                 ) : (
+//                   <div>
+//                     <CircleCheck className="w-5 h-5 text-green-400" />
+//                   </div>
+//                 )}
+//               </span>
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// };
+
+const Footer = () => {
+  const { data } = useUserInfo();
   return (
-    <div className="min-h-50 w-full p-3">
-      <div className=" bg-white/5  apply-border-md rounded-lg flex flex-col gap-4 px-1 py-2 text-white/60 ">
-        <h1 className="w-full text-center p-2  border-b border-white/5">
-          Status
-        </h1>
-        {item.map((item, i) => {
-          return (
-            <div
-              key={i}
-              className="w-full flex px-3 items-center justify-between"
-            >
-              <h1 className="capitalize ">{item.name}</h1>
-              <span>
-                {item.query.isPending || item.query.isRefetching ? (
-                  <div>
-                    <Loader className="w-5 h-5" />
-                  </div>
-                ) : item.query.isError ? (
-                  <div>
-                    <CircleX className="w-5 h-5 text-red-400" />
-                  </div>
-                ) : (
-                  <div>
-                    <CircleCheck className="w-5 h-5 text-green-400" />
-                  </div>
-                )}
-              </span>
-            </div>
-          );
-        })}
+    <div className=" flex w-full justify-center items-center border-t border-white/5">
+      <div className="p-3 flex flex-col gap-2 ">
+        <h1>{data?.name}</h1>
+        <h1>{data?.regNumber}</h1>
       </div>
     </div>
   );

@@ -16,6 +16,8 @@ const queryClient = new QueryClient({
     queries: {
       gcTime: Infinity,
       retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   },
 });
@@ -48,9 +50,10 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
       persister: localStoragePersister,
       queryClient,
       maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-      buster: "v1.0.1",
+      buster: "v1.0.2",
     });
   }
+
   const { isMobile } = useScreen();
   const { isOpen } = useSidebar();
 
@@ -61,10 +64,8 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
           ref={isOpen && isMobile ? myDivRef : null}
           className={`${
             isMobile
-              ? `z-10 fixed inset-y-2 bg-white/5 backdrop-blur-xl rounded-lg  min-w-64 ${
-                  isOpen
-                    ? "translate-x-0 transform-gpu transition-transform duration-300"
-                    : "-translate-x-96"
+              ? `z-10 fixed inset-y-2 bg-white/5 backdrop-blur-xl rounded-lg  min-w-64 transform-gpu transition-transform duration-300 ${
+                  isOpen ? "translate-x-0 " : "-translate-x-96"
                 } `
               : "min-w-76"
           } `}
