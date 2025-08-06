@@ -2,7 +2,7 @@
 import { useAuth } from "@/hooks/zustand";
 import { validatePassword, validateUser } from "@/server/action";
 import { Eye, EyeOff } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { Loader } from "../app/components/loader";
@@ -10,71 +10,102 @@ import { Loader } from "../app/components/loader";
 export const LoginComponent = () => {
   const [eyeOpen, setEyeOpen] = useState(false);
   const { error, setError, loading, setLoading, setEmail, email } = useAuth();
+  const router = useRouter();
 
   const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const form = new FormData(e.currentTarget);
-    const hash1 = form.get("name") as string;
-    const hash2 = form.get("password") as string;
 
-    if (hash1 && hash1.length !== 0) {
-      const { res } = await validateUser(hash1);
-      if (res.data?.status_code === 400) {
-        setError(res.data?.message as string);
-        setLoading(false);
-        return;
-      }
-      if (res.data?.status_code === 500) {
-        setError("You reached Maximum Login");
-        setLoading(false);
-        return;
-      }
-      if (res.error) {
-        setError(res.errorReason as string);
-        setLoading(false);
-        return;
-      }
+    try {
+      const form = new FormData(e.currentTarget);
+      const hash1 = form.get("name") as string;
+      const hash2 = form.get("password") as string;
 
-      setEmail({
-        digest: res.data?.digest as string,
-        identifier: res.data?.identifier as string,
-      });
-      setLoading(false);
-      return;
-    }
+      // First step: Validate user (email)
+      if (hash1 && hash1.length !== 0) {
+        const { res } = await validateUser(hash1);
 
-    if (hash2 && hash2.length !== 0) {
-      const { res } = await validatePassword({
-        digest: email.digest,
-        identifier: email.identifier,
-        password: hash2,
-      });
-
-      if (res.data?.statusCode === 500 || res.data?.captcha?.required) {
-        if (res.data?.captcha?.required) {
-          setError(res.data.message as string);
+        if (res.data?.status_code === 400) {
+          setError(res.data?.message as string);
           setLoading(false);
           return;
         }
-        setError(res.data?.message as string);
-        setLoading(false);
-        return;
-      }
-      if (res.error) {
-        setError(res.errorReason as string);
-        setLoading(false);
-        return;
+        if (res.data?.status_code === 500) {
+          setError("You reached Maximum Login");
+          setLoading(false);
+          return;
+        }
+        if (res.error) {
+          setError(res.errorReason as string);
+          setLoading(false);
+          return;
+        }
+
+        if (res.data?.digest && res.data?.identifier) {
+          setEmail({
+            digest: res.data.digest as string,
+            identifier: res.data.identifier as string,
+          });
+          setLoading(false);
+          return;
+        } else {
+          setError("Invalid response from server");
+          setLoading(false);
+          return;
+        }
       }
 
-      if (res.isAuthenticated && typeof res.data?.cookies === "string") {
-        Cookies.set("token", res.data.cookies, { expires: 30, path: "/" });
-        return redirect("/app/timetable");
+      // Second step: Validate password
+      if (hash2 && hash2.length !== 0) {
+        if (!email.digest || !email.identifier) {
+          setError("Please enter your email first");
+          setLoading(false);
+          return;
+        }
+
+        const { res } = await validatePassword({
+          digest: email.digest,
+          identifier: email.identifier,
+          password: hash2,
+        });
+
+        if (res.data?.statusCode === 500 || res.data?.captcha?.required) {
+          if (res.data?.captcha?.required) {
+            setError(res.data.message as string);
+            setLoading(false);
+            return;
+          }
+          setError(res.data?.message as string);
+          setLoading(false);
+          return;
+        }
+
+        if (res.error) {
+          setError(res.errorReason as string);
+          setLoading(false);
+          return;
+        }
+
+        if (res.isAuthenticated && typeof res.data?.cookies === "string") {
+          Cookies.set("token", res.data.cookies, { expires: 30, path: "/" });
+          router.push("/app/timetable");
+          return;
+        } else {
+          setError("Authentication failed");
+          setLoading(false);
+          return;
+        }
       }
+
+      // If neither hash1 nor hash2 is provided
+      setError("Please enter your credentials");
+      setLoading(false);
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An unexpected error occurred. Please try again.");
+      setLoading(false);
     }
-    setLoading(false);
-    return;
   };
   return (
     <div className="flex-1 flex items-center justify-center px-6 lg:px-0">
