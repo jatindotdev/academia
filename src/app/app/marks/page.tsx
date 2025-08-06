@@ -31,12 +31,10 @@ const Data = ({ data, category }: { data: MarkDetail[]; category: string }) => {
   const filteredData = data.filter(
     (i) => i.category.toLowerCase() === category
   );
-  console.log(data);
   return (
     <div className=" py-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-full grid gap-4 px-2 lg:px-5">
       {filteredData.map((item, i) => {
         const courseList = course?.find((i) => i.courseCode === item.course);
-        // console.log(courseList);
         return (
           <div
             key={i}

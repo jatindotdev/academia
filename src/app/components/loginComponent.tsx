@@ -19,7 +19,7 @@ export const LoginComponent = () => {
     const hash1 = form.get("name") as string;
     const hash2 = form.get("password") as string;
 
-    if (hash1) {
+    if (hash1 && hash1.length !== 0) {
       const { res } = await validateUser(hash1);
       if (res.data?.status_code === 400) {
         setError(res.data?.message as string);
@@ -45,31 +45,33 @@ export const LoginComponent = () => {
       return;
     }
 
-    const { res } = await validatePassword({
-      digest: email.digest,
-      identifier: email.identifier,
-      password: hash2,
-    });
+    if (hash2 && hash2.length !== 0) {
+      const { res } = await validatePassword({
+        digest: email.digest,
+        identifier: email.identifier,
+        password: hash2,
+      });
 
-    if (res.data?.statusCode === 500 || res.data?.captcha?.required) {
-      if (res.data?.captcha?.required) {
-        setError(res.data.message as string);
+      if (res.data?.statusCode === 500 || res.data?.captcha?.required) {
+        if (res.data?.captcha?.required) {
+          setError(res.data.message as string);
+          setLoading(false);
+          return;
+        }
+        setError(res.data?.message as string);
         setLoading(false);
         return;
       }
-      setError(res.data?.message as string);
-      setLoading(false);
-      return;
-    }
-    if (res.error) {
-      setError(res.errorReason as string);
-      setLoading(false);
-      return;
-    }
+      if (res.error) {
+        setError(res.errorReason as string);
+        setLoading(false);
+        return;
+      }
 
-    if (res.isAuthenticated && typeof res.data?.cookies === "string") {
-      Cookies.set("token", res.data.cookies, { expires: 30, path: "/" });
-      return redirect("/app/timetable");
+      if (res.isAuthenticated && typeof res.data?.cookies === "string") {
+        Cookies.set("token", res.data.cookies, { expires: 30, path: "/" });
+        return redirect("/app/timetable");
+      }
     }
     setLoading(false);
     return;
@@ -89,7 +91,7 @@ export const LoginComponent = () => {
           >
             <div className="w-full flex flex-col gap-4 ">
               {/* Show email input if digest is empty (first step) */}
-              {email.digest.length === 0 && (
+              {email?.digest.length === 0 && (
                 <input
                   id="name"
                   name="name"
@@ -102,7 +104,7 @@ export const LoginComponent = () => {
                 />
               )}
               {/* Show password input if digest is present and password is not yet set (second step) */}
-              {email.digest.length !== 0 && (
+              {email?.digest.length !== 0 && (
                 <div className="w-full relative z-10 ">
                   <input
                     id="password"
@@ -130,7 +132,7 @@ export const LoginComponent = () => {
                 </div>
               )}
             </div>
-            {error.length !== 0 && <div className="text-red-400">{error}</div>}
+            {error?.length !== 0 && <div className="text-red-400">{error}</div>}
             <button
               type="submit"
               disabled={loading}

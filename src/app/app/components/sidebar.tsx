@@ -15,6 +15,7 @@ import { useScreen } from "@/hooks/zustand";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Icon from "@/../public/favicon.svg";
+import { Loader } from "./loader";
 
 type MenuType = {
   name: string;
@@ -163,13 +164,17 @@ const Menu = () => {
 // };
 
 const Footer = () => {
-  const { data } = useUserInfo();
+  const { data, isPending } = useUserInfo();
   return (
-    <div className=" flex w-full justify-center items-center border-t border-white/5">
-      <div className="p-3 flex flex-col gap-2 ">
-        <h1>{data?.name}</h1>
-        <h1>{data?.regNumber}</h1>
-      </div>
+    <div className=" flex w-full justify-center items-center border-t border-white/5 min-h-20 ">
+      {!isPending ? (
+        <div className="p-3 flex flex-col gap-2 ">
+          <h1>{data?.name}</h1>
+          <h1>{data?.regNumber}</h1>
+        </div>
+      ) : (
+        <Loader className="w-5 h-5 " />
+      )}
     </div>
   );
 };

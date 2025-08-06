@@ -59,6 +59,7 @@ const Content = () => {
           src={LandingImage}
           alt="Landing illustration showing a modern dashboard"
           className="w-full h-auto rounded-xl shadow-lg"
+          loading="lazy"
         />
       </div>
     </div>

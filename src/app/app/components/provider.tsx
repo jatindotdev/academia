@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { LogOut, PanelRightOpen, ShieldAlert } from "lucide-react";
 import { SidebarToggle } from "@/utils/sidebarToggle";
 import { useUserInfo } from "@/hooks/query";
+import Loading from "../loading";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -24,6 +25,8 @@ const queryClient = new QueryClient({
 
 const QueryProvider = ({ children }: { children: React.ReactNode }) => {
   const myDivRef = useRef(null);
+  const { isMobile } = useScreen();
+  const { isOpen } = useSidebar();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -42,20 +45,17 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [myDivRef]);
 
-  if (typeof window !== "undefined") {
-    const localStoragePersister = createAsyncStoragePersister({
-      storage: window.localStorage,
-    });
-    persistQueryClient({
-      persister: localStoragePersister,
-      queryClient,
-      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-      buster: "v1.0.2",
-    });
-  }
+  if (typeof window === "undefined") return <Loading />;
 
-  const { isMobile } = useScreen();
-  const { isOpen } = useSidebar();
+  const localStoragePersister = createAsyncStoragePersister({
+    storage: window.localStorage,
+  });
+  persistQueryClient({
+    persister: localStoragePersister,
+    queryClient,
+    maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+    buster: "v1.0.2",
+  });
 
   return (
     <QueryClientProvider client={queryClient}>

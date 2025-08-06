@@ -74,7 +74,6 @@ const DayChange = ({ data }: { data: Month[] }) => {
 };
 
 const Data = ({ data, month }: { data: Month[]; month: number }) => {
-  console.log(data);
   return (
     <div className="py-3 h-full w-full grid px-1 sm:px-2 md:px-4 lg:px-6 xl:px-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 ">
       {data[month].days.map((item, i) => (
