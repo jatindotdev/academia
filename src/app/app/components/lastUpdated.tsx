@@ -66,23 +66,30 @@ const LastUpdatedContent = ({
       : null;
 
   return (
-    <div className="w-full min-h-10 border-b border-slate-400/10 flex px-4 items-center justify-between ">
-      {query.isRefetching ? (
-        <h1 className="text-white/50">Fetching</h1>
-      ) : query.isLoading ? (
-        <h1 className="text-white/50">Loading...</h1>
-      ) : lastUpdated ? (
-        <h1 className="text-white/50">Last updated {lastUpdated} ago </h1>
-      ) : (
-        <h1 className="text-white/50">No data available</h1>
-      )}
-      <span className="cursor-pointer ">
+    <div className="px-4 border-b border-slate-400/10">
+      <div className="w-full min-h-10  flex items-center justify-between ">
         {query.isRefetching ? (
-          <Loader className="w-4 h-4" />
+          <h1 className="text-white/50">Fetching</h1>
+        ) : query.isLoading ? (
+          <h1 className="text-white/50">Loading...</h1>
+        ) : lastUpdated ? (
+          <h1 className="text-white/50">Last updated {lastUpdated} ago </h1>
         ) : (
-          <RotateCcw onClick={() => query.refetch()} className="w-4 h-4 " />
+          <h1 className="text-white/50">No data available</h1>
         )}
-      </span>
+        <span className="cursor-pointer ">
+          {query.isRefetching ? (
+            <Loader className="w-4 h-4" />
+          ) : (
+            <RotateCcw onClick={() => query.refetch()} className="w-4 h-4 " />
+          )}
+        </span>
+      </div>
+      {query.isError && (
+        <div className="bg-red-400/20 text-red-400  w-full justify-center items-center min-h-8 flex border border-red-400/60 rounded-lg text-sm">
+          {query.error.message}
+        </div>
+      )}
     </div>
   );
 };

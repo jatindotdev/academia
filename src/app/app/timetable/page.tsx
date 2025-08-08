@@ -57,7 +57,9 @@ const DayChange = ({ data }: { data: DaySchedule[] }) => {
           if (!isNaN(todayDayOrder)) {
             setToday(todayDayOrder);
             setDayOrder(todayDayOrder - 1);
+            return;
           }
+          setToday(0);
         }
       }
     }
@@ -148,9 +150,6 @@ const Data = ({
             {item.isClass ? (
               <div className="w-full h-full text-white/70  flex flex-col gap-4 ">
                 <div className="flex justify-between w-full px-2 min-h-12 items-center border-b border-white/5">
-                  <h1 className="background-rounded apply-border-sm">
-                    {item.courseRoomNo}
-                  </h1>
                   <span className=" px-2 py-0.5 rounded-full text-sm apply-border-sm bg-black text-blue-400 ">
                     {item.courseType?.charAt(0)}
                   </span>
@@ -158,9 +157,14 @@ const Data = ({
                     {item.time}
                   </span>
                 </div>
-                <div className=" flex items-center justify-center w-[80%] h-full mx-auto  text-green-300">
-                  {item.courseTitle}
+                <div className=" flex items-center justify-center w-[80%] h-full mx-auto  text-green-300 flex-col gap-3">
+                  <h1 className="w-full">{item.courseTitle}</h1>
+                  <h2 className=" text-sm text-white/60 flex gap-2 w-full">
+                    <span className="text-white/80">Class Room</span> -
+                    <span>{item.courseRoomNo}</span>
+                  </h2>
                 </div>
+
                 {attendance ? (
                   <AttendanceData attendance={attendance} />
                 ) : !isError ? (

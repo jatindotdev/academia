@@ -28,9 +28,10 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://academiax.in/Landing/BigScreen.png",
-        width: 1920,
-        height: 1080,
+        width: 1200,
+        height: 630,
         alt: "AcademiaX",
+        type: "image/png",
       },
     ],
     type: "website",
@@ -41,7 +42,15 @@ export const metadata: Metadata = {
     title: "AcademiaX",
     description,
     creator: "@jackwaghan",
-    images: ["https://academiax.in/Landing/BigScreen.png"],
+    images: [
+      {
+        url: "https://academiax.in/Landing/BigScreen.png",
+        width: 1200,
+        height: 630,
+        alt: "AcademiaX",
+        type: "image/png",
+      },
+    ],
   },
 };
 

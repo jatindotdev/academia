@@ -103,7 +103,7 @@ const Menu = () => {
             href={i.url}
             onClick={SidebarToggle}
             prefetch={false}
-            className={`flex gap-3 justify-between px-4 py-2 capitalize ${
+            className={`flex gap-3 justify-between px-4 py-1.5 capitalize ${
               i.url === path
                 ? "apply-border-sm bg-white/5  rounded-lg text-blue-400"
                 : "text-white/50"
