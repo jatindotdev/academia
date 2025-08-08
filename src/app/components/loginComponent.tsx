@@ -173,10 +173,12 @@ export const LoginComponent = () => {
             </button>
           </form>
         </div>
+
         <a
-          href="https://ssp.srmist.edu.in/resetpassword/"
+          href="https://academia.srmist.edu.in/reset"
           target="_blank"
-          className="absolute -bottom-20 left-1/2 -translate-x-1/2 text-lg underline text-blue-400"
+          rel="noopener"
+          className="absolute -bottom-20 left-1/2 -translate-x-1/2  px-3 py-2 apply-border-sm bg-white/5 rounded text-sm"
         >
           Forget Password ?
         </a>
