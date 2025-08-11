@@ -159,44 +159,11 @@ const ProfileDrop = ({
 }: {
   dropRef: React.RefObject<HTMLDivElement>;
 }) => {
-  // const [deferredPrompt, setDeferredPrompt] =
-  //   useState<BeforeInstallPromptEvent | null>(null);
-
-  // useEffect(() => {
-  //   const handler = (e: BeforeInstallPromptEvent) => {
-  //     e.preventDefault();
-  //     setDeferredPrompt(e);
-  //     console.log("beforeinstallprompt event fired!");
-  //   };
-  //   window.addEventListener("beforeinstallprompt", handler as EventListener);
-  //   return () =>
-  //     window.removeEventListener(
-  //       "beforeinstallprompt",
-  //       handler as EventListener
-  //     );
-  // }, []);
-
   return (
     <div
       ref={dropRef}
       className="absolute top-12 right-0 w-48  bg-white/5 backdrop-blur-sm apply-border-md rounded-xl z-50 flex flex-col shadow-2xl overflow-hidden"
     >
-      {/* {deferredPrompt && (
-        <div
-          className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5 cursor-pointer"
-          onClick={async (e) => {
-            e.preventDefault();
-            deferredPrompt.prompt();
-            await deferredPrompt.userChoice;
-            setDeferredPrompt(null);
-          }}
-        >
-          <span>Install App</span>
-          <span>
-            <Download className="w-5 h-5" />
-          </span>
-        </div>
-      )} */}
       <a
         href="https://github.com/jackwaghan/AcademiaX"
         target="_blank"
