@@ -40,7 +40,7 @@ export default Sidebar;
 const Header = () => {
   return (
     <div
-      className={`flex px-4 w-full min-h-12 items-center  border-b border-white/5 gap-4 ${
+      className={`flex px-4 w-full min-h-14 items-center  border-b border-white/5 gap-4 ${
         useScreen().isMobile ? "justify-between" : "justify-center"
       }`}
     >

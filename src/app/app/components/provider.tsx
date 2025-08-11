@@ -8,10 +8,11 @@ import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persi
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { useScreen, useSidebar } from "@/hooks/zustand";
 import { usePathname } from "next/navigation";
-import { LogOut, PanelRightOpen, ShieldAlert } from "lucide-react";
+import { Github, LogOut, PanelRightOpen, ShieldAlert } from "lucide-react";
 import { SidebarToggle } from "@/utils/sidebarToggle";
 import { useUserInfo } from "@/hooks/query";
 import Loading from "../loading";
+import { DiNpm } from "react-icons/di";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -22,6 +23,11 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+export type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+};
 
 const QueryProvider = ({ children }: { children: React.ReactNode }) => {
   const myDivRef = useRef(null);
@@ -153,15 +159,99 @@ const ProfileDrop = ({
 }: {
   dropRef: React.RefObject<HTMLDivElement>;
 }) => {
+  // const [deferredPrompt, setDeferredPrompt] =
+  //   useState<BeforeInstallPromptEvent | null>(null);
+
+  // useEffect(() => {
+  //   const handler = (e: BeforeInstallPromptEvent) => {
+  //     e.preventDefault();
+  //     setDeferredPrompt(e);
+  //     console.log("beforeinstallprompt event fired!");
+  //   };
+  //   window.addEventListener("beforeinstallprompt", handler as EventListener);
+  //   return () =>
+  //     window.removeEventListener(
+  //       "beforeinstallprompt",
+  //       handler as EventListener
+  //     );
+  // }, []);
+
   return (
     <div
       ref={dropRef}
       className="absolute top-12 right-0 w-48  bg-white/5 backdrop-blur-sm apply-border-md rounded-xl z-50 flex flex-col shadow-2xl overflow-hidden"
     >
+      {/* {deferredPrompt && (
+        <div
+          className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5 cursor-pointer"
+          onClick={async (e) => {
+            e.preventDefault();
+            deferredPrompt.prompt();
+            await deferredPrompt.userChoice;
+            setDeferredPrompt(null);
+          }}
+        >
+          <span>Install App</span>
+          <span>
+            <Download className="w-5 h-5" />
+          </span>
+        </div>
+      )} */}
+      <a
+        href="https://github.com/jackwaghan/AcademiaX"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5"
+        onClick={(e) => {
+          if (window.matchMedia("(display-mode: standalone)").matches) {
+            e.preventDefault();
+            window.open(
+              "https://github.com/jackwaghan/AcademiaX",
+              "_blank",
+              "noopener,noreferrer"
+            );
+          }
+        }}
+      >
+        <span>GitHub</span>
+        <span>
+          <Github className="w-5 h-5" />
+        </span>
+      </a>
+      <a
+        href="https://www.npmjs.com/package/srm-academia-api"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5"
+        onClick={(e) => {
+          if (window.matchMedia("(display-mode: standalone)").matches) {
+            e.preventDefault();
+            window.open(
+              "https://www.npmjs.com/package/srm-academia-api",
+              "_blank",
+              "noopener,noreferrer"
+            );
+          }
+        }}
+      >
+        <span>Npm Package</span>
+        <span>
+          <DiNpm className="w-6 h-6" />
+        </span>
+      </a>
       <a
         href="https://chat.whatsapp.com/B6a15jYEKgI1UD7QzX39cM"
         target="_blank"
+        rel="noopener noreferrer"
         className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5"
+        onClick={(e) => {
+          e.preventDefault();
+          window.open(
+            "https://chat.whatsapp.com/B6a15jYEKgI1UD7QzX39cM",
+            "_blank",
+            "noopener,noreferrer"
+          );
+        }}
       >
         <span>Support</span>
         <span>
