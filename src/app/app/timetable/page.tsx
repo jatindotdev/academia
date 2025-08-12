@@ -176,7 +176,10 @@ const Data = ({
             ((item.slot.startsWith("P") && i.courseSlot === "LAB") ||
               !item.slot.startsWith("P"))
         );
-        const current = isCurrentClass(item.time);
+        const current =
+          today && today !== 0 && dayorder === today - 1
+            ? isCurrentClass(item.time)
+            : undefined;
         return (
           <div
             key={item.time}
