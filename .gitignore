@@ -43,6 +43,3 @@ next-env.d.ts
 # ignore json-webserver
 db.json
 
-# ignore PWA File
-public/sw.js
-public/workbox-*.js
