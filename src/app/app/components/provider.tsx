@@ -8,11 +8,18 @@ import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persi
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { useScreen, useSidebar } from "@/hooks/zustand";
 import { usePathname } from "next/navigation";
-import { Github, LogOut, PanelRightOpen, ShieldAlert } from "lucide-react";
+import {
+  CircleUserRound,
+  Github,
+  LogOut,
+  PanelRightOpen,
+  ShieldAlert,
+} from "lucide-react";
 import { SidebarToggle } from "@/utils/sidebarToggle";
 import { useUserInfo } from "@/hooks/query";
 import Loading from "../loading";
 import { DiNpm } from "react-icons/di";
+import Link from "next/link";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -139,7 +146,7 @@ const ProfileIcon = () => {
   return (
     <div
       ref={iconRef}
-      className="relative w-10 h-10 shadow-2xl flex items-center justify-center font-semibold apply-border-md background-rounded cursor-pointer"
+      className={`relative w-10 h-10 shadow-2xl flex items-center justify-center font-semibold apply-border-md background-rounded cursor-pointer ${!toggle && "apply-hover-scale"}`}
       onClick={() => setToggle((prev) => !prev)}
     >
       {data?.name
@@ -162,8 +169,17 @@ const ProfileDrop = ({
   return (
     <div
       ref={dropRef}
-      className="absolute top-12 right-0 w-48  bg-white/5 backdrop-blur-sm apply-border-md rounded-xl z-50 flex flex-col shadow-2xl overflow-hidden"
+      className="absolute top-12 right-0 w-48  bg-white/5 backdrop-blur-sm apply-border-md rounded-xl z-50 flex flex-col shadow-2xl overflow-hidden "
     >
+      <Link
+        href="/app/profile"
+        className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5"
+      >
+        <span>Profile</span>
+        <span>
+          <CircleUserRound className="w-5 h-5" />
+        </span>
+      </Link>
       <a
         href="https://github.com/jackwaghan/AcademiaX"
         target="_blank"
@@ -175,7 +191,7 @@ const ProfileDrop = ({
             window.open(
               "https://github.com/jackwaghan/AcademiaX",
               "_blank",
-              "noopener,noreferrer"
+              "noopener,noreferrer",
             );
           }
         }}
@@ -196,7 +212,7 @@ const ProfileDrop = ({
             window.open(
               "https://www.npmjs.com/package/srm-academia-api",
               "_blank",
-              "noopener,noreferrer"
+              "noopener,noreferrer",
             );
           }
         }}
@@ -216,7 +232,7 @@ const ProfileDrop = ({
           window.open(
             "https://chat.whatsapp.com/B6a15jYEKgI1UD7QzX39cM",
             "_blank",
-            "noopener,noreferrer"
+            "noopener,noreferrer",
           );
         }}
       >
