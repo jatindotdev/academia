@@ -97,7 +97,7 @@ const DayChange = ({ data }: { data: DaySchedule[] }) => {
                 : "text-blue-400"
             }`}
           >
-            {calendarLoading || calendarIsFetching ? (
+            {calendarLoading ? (
               <GlobalLoader className="w-4 h-4" />
             ) : calendarError ? (
               <span className="flex gap-2 items-center justify-center">
