@@ -15,9 +15,9 @@ const NotPaid = () => {
   });
   return (
     <div className="w-full h-full items-center  flex flex-col ">
-      <div className="relative max-w-lg lg:mt-40 mt-24 w-full text-center text-xl flex flex-col gap-8 items-center  px-4 py-7 rounded border border-white/10 ">
-        <div className="absolute lg:-top-5 lg:-left-5 -top-7  px-3 py-2 text-white bg-white/5 rounded-lg backdrop-blur-3xl border border-white/5">
-          ₹ 20
+      <div className="relative max-w-lg lg:mt-40 mt-12 w-full text-center text-xl flex flex-col gap-8 items-center  px-4 py-7 rounded-lg border-dotted border-2 border-white/10 bg-background">
+        <div className="absolute lg:-top-5 lg:-left-5 -top-7 text-lg  px-2.5 py-1.5  bg-black rounded-lg backdrop-blur-3xl border border-white/10 text-blue-300">
+          ₹ 20 / <span className="text-sm">M</span>
         </div>
         <h1>AcademiaX is not more free 🥲</h1>
         <h2 className="text-lg text-white/50">

@@ -182,7 +182,7 @@ const ProfileDrop = ({
   return (
     <div
       ref={dropRef}
-      className="absolute top-12 right-0 w-48  bg-white/5 backdrop-blur-sm apply-border-md rounded-xl z-50 flex flex-col shadow-2xl overflow-hidden "
+      className="absolute top-14 right-0 w-48  bg-white/5 backdrop-blur-lg rounded-lg border border-white/5 z-50 flex flex-col shadow-2xl overflow-hidden "
     >
       <Link
         href="/app/myplan"
@@ -250,7 +250,7 @@ const ProfileDrop = ({
           );
         }}
       >
-        <span>Support</span>
+        <span>Need Help</span>
         <span>
           <ShieldAlert className="w-5 h-5" />
         </span>

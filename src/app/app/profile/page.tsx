@@ -37,7 +37,7 @@ const Data = ({ data }: { data: UserInfo }) => {
           <h1 className="text-2xl font-semibold text-blue-400">{data.name}</h1>
           <span>{data.department}</span>
         </div>
-        <div className="w-full flex flex-col gap-4 bg-[#1b1c21] rounded-lg px-4 py-4 border border-white/5 ">
+        <div className="w-full flex flex-col gap-4 bg-background rounded-lg px-4 py-4 border-dotted border-white/10 border-2 ">
           <ProfileRow label="Reg. Number" value={data.regNumber} />
           <ProfileRow label="Mobile" value={data.mobile} />
           <ProfileRow label="Semester" value={data.semester} />
