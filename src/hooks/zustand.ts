@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useSyncExternalStore } from "react";
 
 type SidebarState = {
   isOpen: boolean;
@@ -7,10 +8,15 @@ type SidebarState = {
 
 export type UseAuthType = {
   email: {
+    mail: string;
     digest: string;
     identifier: string;
   };
-  setEmail: (email: { digest: string; identifier: string }) => void;
+  setEmail: (email: {
+    mail: string;
+    digest: string;
+    identifier: string;
+  }) => void;
   error: string;
   setError: (error: string) => void;
   loading: boolean;
@@ -19,18 +25,17 @@ export type UseAuthType = {
 
 export const useAuth = create<UseAuthType>((set) => ({
   email: {
+    mail: "",
     digest: "",
     identifier: "",
   },
-  setEmail: (email: { digest: string; identifier: string }) =>
+  setEmail: (email: { mail: string; digest: string; identifier: string }) =>
     set((state) => ({ ...state, email })),
   error: "",
   setError: (error: string) => set((state) => ({ ...state, error })),
   loading: false,
   setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),
 }));
-
-import { useSyncExternalStore } from "react";
 
 export function useScreen() {
   const isMobile = useSyncExternalStore(
@@ -44,7 +49,7 @@ export function useScreen() {
       if (typeof window === "undefined") return true;
       return window.innerWidth <= 1560;
     },
-    () => true,
+    () => true
   );
   return { isMobile };
 }

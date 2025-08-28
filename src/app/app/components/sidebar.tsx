@@ -1,5 +1,4 @@
 import Icon from "@/../public/favicon.svg";
-import { useUserInfo } from "@/hooks/query";
 import { useScreen } from "@/hooks/zustand";
 import { SidebarToggle } from "@/utils/sidebarToggle";
 import {
@@ -7,6 +6,7 @@ import {
   BookOpenText,
   Calendar1,
   CalendarClock,
+  CircleUserRound,
   Hourglass,
   X,
 } from "lucide-react";
@@ -14,7 +14,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { Loader } from "./loader";
 import { CiShare1 } from "react-icons/ci";
 
 type MenuType = {
@@ -88,11 +87,11 @@ const Menu = () => {
       url: "/app/calendar",
       icon: <Calendar1 className="w-5 h-5" />,
     },
-    // {
-    //   name: "profile",
-    //   url: "/app/profile",
-    //   icon: <CircleUserRound className="w-5 h-5" />,
-    // },
+    {
+      name: "profile",
+      url: "/app/profile",
+      icon: <CircleUserRound className="w-5 h-5" />,
+    },
   ];
 
   return (
@@ -187,18 +186,18 @@ const Author = () => {
 //   );
 // };
 
-const Footer = () => {
-  const { data, isPending } = useUserInfo();
-  return (
-    <div className=" flex w-full justify-center items-center border-t border-white/5 min-h-20 ">
-      {!isPending ? (
-        <div className="p-3 flex flex-col gap-2 ">
-          <h1>{data?.name}</h1>
-          <h1>{data?.regNumber}</h1>
-        </div>
-      ) : (
-        <Loader className="w-5 h-5 " />
-      )}
-    </div>
-  );
-};
+// const Footer = () => {
+//   const { data, isPending } = useUserInfo();
+//   return (
+//     <div className=" flex w-full justify-center items-center border-t border-white/5 min-h-20 ">
+//       {!isPending ? (
+//         <div className="p-3 flex flex-col gap-2 ">
+//           <h1>{data?.name}</h1>
+//           <h1>{data?.regNumber}</h1>
+//         </div>
+//       ) : (
+//         <Loader className="w-5 h-5 " />
+//       )}
+//     </div>
+//   );
+// };

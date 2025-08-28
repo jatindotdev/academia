@@ -27,7 +27,7 @@ export const LoginComponent = () => {
         const email = hash1.includes("@srmist.edu.in")
           ? hash1
           : `${hash1}@srmist.edu.in`;
-        const { res } = await validateUser(email);
+        const { res } = await validateUser(email.toLowerCase());
 
         if (res.data?.status_code === 400) {
           setError(res.data?.message as string);
@@ -47,6 +47,7 @@ export const LoginComponent = () => {
 
         if (res.data?.digest && res.data?.identifier) {
           setEmail({
+            mail: email.toLowerCase(),
             digest: res.data.digest as string,
             identifier: res.data.identifier as string,
           });
@@ -92,6 +93,7 @@ export const LoginComponent = () => {
 
         if (res.isAuthenticated && typeof res.data?.cookies === "string") {
           Cookies.set("token", res.data.cookies, { expires: 30, path: "/" });
+          Cookies.set("user", email.mail, { expires: 30, path: "/" });
           router.push("/app/timetable");
           return;
         } else {

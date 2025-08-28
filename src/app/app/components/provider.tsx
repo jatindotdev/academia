@@ -9,7 +9,7 @@ import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { useScreen, useSidebar } from "@/hooks/zustand";
 import { usePathname } from "next/navigation";
 import {
-  CircleUserRound,
+  CreditCard,
   Github,
   LogOut,
   PanelRightOpen,
@@ -20,6 +20,7 @@ import { useUserInfo } from "@/hooks/query";
 import Loading from "../loading";
 import { DiNpm } from "react-icons/di";
 import Link from "next/link";
+import { getPaymentClient } from "@/utils/getCookieClient";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -101,18 +102,28 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
 export default QueryProvider;
 
 const MenuBar = () => {
+  const isMobile = useScreen().isMobile;
   const path = usePathname().split("/");
   return (
     <div className="min-h-14 px-4 justify-between items-center flex text-lg  border-b border-slate-400/10">
       <span className="flex items-center gap-4">
-        {useScreen().isMobile && (
+        {isMobile && (
           <span onClick={SidebarToggle}>
             <PanelRightOpen className="w-5 h-5 cursor-pointer" />
           </span>
         )}
-        <span className="capitalize">{path[path.length - 1]}</span>
+        <span className="capitalize">
+          {path[path.length - 1] !== "myplan"
+            ? path[path.length - 1]
+            : "My Plan"}
+        </span>
       </span>
-      <ProfileIcon />
+      <div className="flex items-center justify-center gap-2">
+        {/* <div className="text-sm">
+          {paymentCookie ? paymentCookie.payload.id : "free"}
+        </div> */}
+        <ProfileIcon />
+      </div>
     </div>
   );
 };
@@ -146,7 +157,9 @@ const ProfileIcon = () => {
   return (
     <div
       ref={iconRef}
-      className={`relative w-10 h-10 shadow-2xl flex items-center justify-center font-semibold apply-border-md background-rounded cursor-pointer ${!toggle && "apply-hover-scale"}`}
+      className={`relative w-10 h-10 shadow-2xl flex items-center justify-center font-semibold apply-border-md background-rounded cursor-pointer ${
+        !toggle && "apply-hover-scale"
+      }`}
       onClick={() => setToggle((prev) => !prev)}
     >
       {data?.name
@@ -172,14 +185,15 @@ const ProfileDrop = ({
       className="absolute top-12 right-0 w-48  bg-white/5 backdrop-blur-sm apply-border-md rounded-xl z-50 flex flex-col shadow-2xl overflow-hidden "
     >
       <Link
-        href="/app/profile"
+        href="/app/myplan"
         className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5"
       >
-        <span>Profile</span>
+        <span>My Plan</span>
         <span>
-          <CircleUserRound className="w-5 h-5" />
+          <CreditCard className="w-5 h-5" />
         </span>
       </Link>
+
       <a
         href="https://github.com/jackwaghan/AcademiaX"
         target="_blank"
@@ -191,7 +205,7 @@ const ProfileDrop = ({
             window.open(
               "https://github.com/jackwaghan/AcademiaX",
               "_blank",
-              "noopener,noreferrer",
+              "noopener,noreferrer"
             );
           }
         }}
@@ -212,7 +226,7 @@ const ProfileDrop = ({
             window.open(
               "https://www.npmjs.com/package/srm-academia-api",
               "_blank",
-              "noopener,noreferrer",
+              "noopener,noreferrer"
             );
           }
         }}
@@ -232,7 +246,7 @@ const ProfileDrop = ({
           window.open(
             "https://chat.whatsapp.com/B6a15jYEKgI1UD7QzX39cM",
             "_blank",
-            "noopener,noreferrer",
+            "noopener,noreferrer"
           );
         }}
       >

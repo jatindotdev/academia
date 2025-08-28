@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { TallyModalRoot } from "./TallyModalRoot";
-// import { GoogleAnalytics } from "@next/third-parties/google";
+// import { TallyModalRoot } from "./TallyModalRoot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -81,12 +80,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiase overflow-hidden`}
       >
-        <TallyModalRoot />
+        {/* <TallyModalRoot /> */}
 
         {children}
       </body>
-
-      {/* <GoogleAnalytics gaId={process.env.GA_TRACKING_CODE!} /> */}
     </html>
   );
 }

@@ -1,13 +1,18 @@
 import React from "react";
-import QueryProvider from "./components/provider";
-
 import { Metadata } from "next";
+import QueryProvider from "./components/provider";
 export const runtime = "edge";
 export const metadata: Metadata = {
   title: "App",
   description: "App Route",
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export const dynamic = "force-dynamic";
+
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <QueryProvider>{children}</QueryProvider>;
 }

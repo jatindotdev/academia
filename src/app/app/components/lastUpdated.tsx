@@ -122,7 +122,7 @@ const LastUpdated = () => {
     case "profile":
       return <ProfileLastUpdated />;
     default:
-      return <TimetableLastUpdated />; // fallback
+      return;
   }
 };
 

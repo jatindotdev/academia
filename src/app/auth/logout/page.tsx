@@ -18,7 +18,7 @@ const Page = () => {
         });
       }
       window.localStorage.clear();
-      return redirect("/auh/login");
+      return redirect("/auth/login");
     };
     Clear();
   }, []);

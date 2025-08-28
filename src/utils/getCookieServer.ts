@@ -1,6 +1,18 @@
 import { cookies } from "next/headers";
+import { PaymentType } from "../../Types/payment";
 
 export async function getCookie() {
-  const cookie = (await cookies()).get("token");
-  return cookie;
+  const token = (await cookies()).get("token")?.value;
+  const user = (await cookies()).get("user")?.value;
+  return { token, user };
+}
+
+export async function getPayment(user: string) {
+  const response = await fetch(
+    `${process.env.PAYMENT_LINK!}/payment/getuser?user=${user}`
+  )
+    .then((e) => e.json())
+    .then((e) => (e.length !== 0 ? e[0] : null));
+
+  return response as PaymentType | null;
 }
