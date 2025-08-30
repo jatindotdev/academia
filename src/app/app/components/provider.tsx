@@ -20,7 +20,6 @@ import { useUserInfo } from "@/hooks/query";
 import Loading from "../loading";
 import { DiNpm } from "react-icons/di";
 import Link from "next/link";
-import { getPaymentClient } from "@/utils/getCookieClient";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -112,11 +111,7 @@ const MenuBar = () => {
             <PanelRightOpen className="w-5 h-5 cursor-pointer" />
           </span>
         )}
-        <span className="capitalize">
-          {path[path.length - 1] !== "myplan"
-            ? path[path.length - 1]
-            : "My Plan"}
-        </span>
+        <span className="capitalize">{path[path.length - 1]}</span>
       </span>
       <div className="flex items-center justify-center gap-2">
         {/* <div className="text-sm">
@@ -185,10 +180,10 @@ const ProfileDrop = ({
       className="absolute top-14 right-0 w-48  bg-white/5 backdrop-blur-lg rounded-lg border border-white/5 z-50 flex flex-col shadow-2xl overflow-hidden "
     >
       <Link
-        href="/app/myplan"
+        href="/app/subscription"
         className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5"
       >
-        <span>My Plan</span>
+        <span>Subscription</span>
         <span>
           <CreditCard className="w-5 h-5" />
         </span>

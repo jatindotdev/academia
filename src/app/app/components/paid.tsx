@@ -11,8 +11,8 @@ const Paid = () => {
   return (
     <div className="w-full h-full items-center  flex flex-col ">
       <div className="max-w-sm lg:mt-40 mt-24 w-full text-center text-xl flex flex-col items-center  p-4  ">
-        <div className="w-full text-blue-400 ">
-          <h1>Payment Info</h1>
+        <div className="w-full text-white/50 ">
+          <h1>Transaction Info</h1>
         </div>
         <h2 className="text-sm text-white/50 w-full text-start flex flex-col mt-5 justify-center border-2 border-dotted bg-background border-white/10 rounded-lg p-4">
           <ul className="flex flex-col gap-5">
@@ -27,7 +27,7 @@ const Paid = () => {
             <li className="flex justify-between">
               <p>Amount</p>{" "}
               <span className="text-blue-200 ">
-                ₹ {(data?.payload.amount / 100).toFixed(2)}
+                ₹ {(data?.payload.amount / 100).toFixed(2)} / M
               </span>
             </li>
             <li className="flex justify-between ">

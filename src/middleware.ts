@@ -11,8 +11,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/auth/logout", request.url));
 
   const data = await getPayment(cookie.user);
-  if (!data && request.nextUrl.pathname !== "/app/myplan")
-    return NextResponse.redirect(new URL("/app/myplan", request.url));
+  if (!data && request.nextUrl.pathname !== "/app/subscription")
+    return NextResponse.redirect(new URL("/app/subscription", request.url));
   const response = NextResponse.next();
   response.cookies.set("Payment-data", JSON.stringify(data), { path: "/" });
   return response;
