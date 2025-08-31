@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/zustand";
 import { validatePassword, validateUser } from "@/server/action";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Loader } from "../app/components/loader";
 
@@ -11,6 +11,10 @@ export const LoginComponent = () => {
   const [eyeOpen, setEyeOpen] = useState(false);
   const { error, setError, loading, setLoading, setEmail, email } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    window.localStorage.clear();
+  }, []);
 
   const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

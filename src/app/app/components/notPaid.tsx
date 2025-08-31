@@ -1,18 +1,17 @@
 "use client";
-import React, { useEffect } from "react";
+import { useUserInfo } from "@/hooks/query";
+import { createPaymentLink } from "@/server/payment";
+import { getEmail } from "@/utils/getCookieClient";
+import { Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const NotPaid = () => {
-  useEffect(() => {
-    const rzpPaymentForm = document.getElementById("rzp_payment_form");
-
-    if (rzpPaymentForm && !rzpPaymentForm.hasChildNodes()) {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/payment-button.js";
-      script.async = true;
-      script.dataset.payment_button_id = "pl_RA63H1DIAGQj8P";
-      rzpPaymentForm.appendChild(script);
-    }
-  });
+  const { data } = useUserInfo();
+  const email = getEmail();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   return (
     <div className="w-full mx-auto max-w-lg h-full items-center flex flex-col px-4 py-6 lg:py-20 gap-14 ">
       <div className="p-4 border-red-300 border-2 border-dotted rounded-lg  text-white/50">
@@ -30,13 +29,53 @@ const NotPaid = () => {
           adore this user interface and impressive performance, then you have
           the option to do so. It’s entirely up to you.
         </h2>
-        {/* <button className="py-1 w-full px-10 rounded border border-white/10 capitalize bg-white/5 ">
-          pay
-        </button> */}
+        {error && (
+          <div className="p-2 text-sm text-red-400 bg-red-900/20 rounded-md w-full">
+            {error}
+          </div>
+        )}
+        <button
+          onClick={async () => {
+            try {
+              setError(null);
+              setIsLoading(true);
+
+              if (!data) {
+                setError("RazorPay Error");
+                return;
+              }
+
+              const link = await createPaymentLink({
+                name: data.name,
+                email: email,
+                contact: data.mobile,
+              });
+
+              router.push(link);
+              return;
+            } catch (err) {
+              setError("Failed to create payment link.");
+              console.error("Payment link error:", err);
+            } finally {
+              setIsLoading(false);
+            }
+          }}
+          disabled={isLoading}
+          className={`py-1.5 w-full px-10 rounded border border-white/10 capitalize text-[16px] flex items-center justify-center  ${
+            isLoading
+              ? "bg-white/10 cursor-not-allowed"
+              : "bg-white/5 hover:bg-white/10"
+          }`}
+        >
+          {isLoading ? (
+            <Loader className="animate-spin w-5 h-5 text-white " />
+          ) : (
+            "Pay"
+          )}
+        </button>
         <h3 className="text-[16px] text-blue-300 px-5 ">
           Yes, a student made this. Now, a student can pay too!
         </h3>
-        <form id="rzp_payment_form"></form>
         <a
           href="/app/timetable"
           className="text-[14px] underline text-white/50"

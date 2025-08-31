@@ -11,3 +11,9 @@ export interface Payload {
   method: string;
   id: string;
 }
+
+export interface PaymentUserInfo {
+  name: string;
+  email: string;
+  contact: string;
+}
