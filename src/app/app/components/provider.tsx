@@ -7,7 +7,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { useScreen, useSidebar } from "@/hooks/zustand";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   CreditCard,
   Github,
@@ -20,6 +20,7 @@ import { useUserInfo } from "@/hooks/query";
 import Loading from "../loading";
 import { DiNpm } from "react-icons/di";
 import Link from "next/link";
+import { getPaymentClient } from "@/utils/getCookieClient";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -103,6 +104,17 @@ export default QueryProvider;
 const MenuBar = () => {
   const isMobile = useScreen().isMobile;
   const path = usePathname().split("/");
+  const router = useRouter();
+  const data = getPaymentClient();
+  let daysLeft = 0;
+  if (data) {
+    const date = new Date(data?.created_at * 1000);
+    const currentDate = new Date();
+    const daysPassed = Math.floor(
+      (currentDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    daysLeft = Math.max(0, 30 - daysPassed); // Ensure it doesn't go negative
+  }
   return (
     <div className="min-h-14 px-4 justify-between items-center flex text-lg  border-b border-slate-400/10">
       <span className="flex items-center gap-4">
@@ -113,10 +125,24 @@ const MenuBar = () => {
         )}
         <span className="capitalize">{path[path.length - 1]}</span>
       </span>
-      <div className="flex items-center justify-center gap-2">
-        {/* <div className="text-sm">
-          {paymentCookie ? paymentCookie.payload.id : "free"}
-        </div> */}
+      <div className="flex items-center justify-center gap-4">
+        <div
+          onClick={() =>
+            path[path.length - 1] !== "subscription" &&
+            router.push("/app/subscription")
+          }
+          className="text-sm  hover:cursor-pointer hover:scale-[0.97] transition-all duration-300 "
+        >
+          {daysLeft > 0 && daysLeft !== 1 ? (
+            <span className="bg-blue-400/20  border-blue-400/50 border  rounded px-2 py-0.5">
+              {daysLeft} days left
+            </span>
+          ) : (
+            <div className="bg-red-400/20 border-red-400/50 border  rounded px-2 py-0.5">
+              {daysLeft === 1 ? "1 day left" : "Expired"}
+            </div>
+          )}
+        </div>
         <ProfileIcon />
       </div>
     </div>

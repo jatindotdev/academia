@@ -8,6 +8,7 @@ const Paid = () => {
   const date = new Date(data.created_at * 1000);
   const time =
     date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+
   return (
     <div className="w-full h-full items-center  flex flex-col ">
       <div className="max-w-sm lg:mt-40 mt-24 w-full text-center text-xl flex flex-col items-center  p-4  ">
@@ -38,6 +39,22 @@ const Paid = () => {
             </li>
             <li className="flex justify-between">
               <p>Paid on</p> <span className="text-blue-200 ">{time}</span>
+            </li>
+            <li className="flex justify-between">
+              <p>Valid Till</p>
+              <span className="text-blue-200 ">
+                {(() => {
+                  const expiryDate = new Date(date.getTime());
+                  expiryDate.setDate(expiryDate.getDate() + 30);
+                  return (
+                    expiryDate.getDate() +
+                    "/" +
+                    (expiryDate.getMonth() + 1) +
+                    "/" +
+                    expiryDate.getFullYear()
+                  );
+                })()}
+              </span>
             </li>
           </ul>
         </h2>

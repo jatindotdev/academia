@@ -14,8 +14,8 @@ const NotPaid = () => {
     }
   });
   return (
-    <div className="w-full mx-auto max-w-lg h-full items-center flex flex-col px-4 gap-14 ">
-      <div className="p-4 border-red-300 border-2 border-dotted rounded-lg lg:mt-20 mt-8 text-white/50">
+    <div className="w-full mx-auto max-w-lg h-full items-center flex flex-col px-4 py-6 lg:py-20 gap-14 ">
+      <div className="p-4 border-red-300 border-2 border-dotted rounded-lg  text-white/50">
         <span className="text-white/80">Note : </span> While doing payment
         please make sure that srm mail is correct. This is important for further
         authorization.
