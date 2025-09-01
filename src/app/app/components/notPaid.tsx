@@ -10,14 +10,15 @@ const NotPaid = () => {
   const { data } = useUserInfo();
   const email = getEmail();
   const [isLoading, setIsLoading] = useState(false);
+  const [isRedirect, setIsRedirect] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   return (
-    <div className="w-full mx-auto max-w-lg h-full items-center flex flex-col px-4 py-6 lg:py-20 gap-14 ">
-      <div className="p-4 border-red-300 border-2 border-dotted rounded-lg  text-white/50">
-        <span className="text-white/80">Note : </span> While doing payment
-        please make sure that srm mail is correct. This is important for further
-        authorization.
+    <div className="w-full mx-auto max-w-lg h-full items-center flex flex-col px-4 lg:py-26 py-14  gap-20 ">
+      <div>
+        <h1 className="text-[16px] text-white/50 font-medium flex items-center justify-center gap-2">
+          <span className="text-red-500">❤️</span>Trusted by 12k+ Students
+        </h1>
       </div>
       <div className="relative    w-full text-center text-xl flex flex-col gap-8 items-center px-4 py-7 rounded-lg border-dotted border-2 border-white/10 bg-background">
         <div className="absolute lg:-top-5 lg:-left-5 -top-5 text-[15px]  px-2.5 py-1.5  bg-black rounded-lg backdrop-blur-3xl border border-white/10 text-blue-300">
@@ -37,6 +38,7 @@ const NotPaid = () => {
         <button
           onClick={async () => {
             try {
+              setIsRedirect(false);
               setError(null);
               setIsLoading(true);
 
@@ -50,9 +52,8 @@ const NotPaid = () => {
                 email: email,
                 contact: data.mobile,
               });
-
-              router.push(link);
-              return;
+              setIsRedirect(true);
+              return router.replace(link);
             } catch (err) {
               setError("Failed to create payment link.");
               console.error("Payment link error:", err);
@@ -60,7 +61,7 @@ const NotPaid = () => {
               setIsLoading(false);
             }
           }}
-          disabled={isLoading}
+          disabled={isLoading || isRedirect}
           className={`py-1.5 w-full px-10 rounded border border-white/10 capitalize text-[16px] flex items-center justify-center  ${
             isLoading
               ? "bg-white/10 cursor-not-allowed"
@@ -69,6 +70,8 @@ const NotPaid = () => {
         >
           {isLoading ? (
             <Loader className="animate-spin w-5 h-5 text-white " />
+          ) : isRedirect ? (
+            "Redirecting..."
           ) : (
             "Pay"
           )}

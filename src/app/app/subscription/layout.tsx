@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 export const runtime = "edge";
 export const metadata: Metadata = {
-  title: "My Plan",
+  title: "Subscription",
   description: "AcademiaX Subscription",
 };
 

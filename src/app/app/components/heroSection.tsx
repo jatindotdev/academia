@@ -60,6 +60,8 @@ const Content = () => {
           alt="Landing illustration showing a modern dashboard"
           className="w-full h-auto rounded-xl shadow-lg"
           loading="lazy"
+          width={500}
+          height={500}
         />
       </div>
     </div>

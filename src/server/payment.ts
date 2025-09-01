@@ -29,13 +29,12 @@ export async function createPaymentLink(userInfo: PaymentUserInfo) {
       method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: "follow",
     };
 
-    const res = await fetch("https://api.razorpay.com/v1/payment_links", {
-      ...requestOptions,
-      redirect: "follow" as RequestRedirect,
-    }).then((response) => response.json());
+    const res = await fetch(
+      "https://api.razorpay.com/v1/payment_links",
+      requestOptions
+    ).then((response) => response.json());
 
     return res.short_url;
   } catch (error) {
