@@ -25,7 +25,7 @@ const Page = () => {
 
   return (
     <div className="w-dvw h-dvh items-center justify-center flex flex-col  gap-4 ">
-      <Loader className="w-10 h-10 " />
+      <Loader className="w-8 h-8 " />
       <h1 className="text-xl text-white/50 animate-pulse">Logging Out</h1>
     </div>
   );

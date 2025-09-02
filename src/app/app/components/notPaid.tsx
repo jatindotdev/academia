@@ -53,7 +53,8 @@ const NotPaid = () => {
                 contact: data.mobile,
               });
               setIsRedirect(true);
-              return router.replace(link);
+              router.replace(link);
+              return;
             } catch (err) {
               setError("Failed to create payment link.");
               console.error("Payment link error:", err);

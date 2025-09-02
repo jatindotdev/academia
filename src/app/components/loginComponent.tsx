@@ -2,7 +2,6 @@
 import { useAuth } from "@/hooks/zustand";
 import { validatePassword, validateUser } from "@/server/action";
 import { Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Loader } from "../app/components/loader";
@@ -10,7 +9,6 @@ import { Loader } from "../app/components/loader";
 export const LoginComponent = () => {
   const [eyeOpen, setEyeOpen] = useState(false);
   const { error, setError, loading, setLoading, setEmail, email } = useAuth();
-  const router = useRouter();
 
   useEffect(() => {
     window.localStorage.clear();
@@ -98,8 +96,7 @@ export const LoginComponent = () => {
         if (res.isAuthenticated && typeof res.data?.cookies === "string") {
           Cookies.set("token", res.data.cookies, { expires: 30, path: "/" });
           Cookies.set("user", email.mail, { expires: 30, path: "/" });
-          router.push("/app/timetable");
-          return;
+          return (window.location.href = "/app/timetable");
         } else {
           setError("Authentication failed");
           setLoading(false);
