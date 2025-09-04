@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   CreditCard,
   Github,
+  Loader,
   LogOut,
   PanelRightOpen,
   ShieldAlert,
@@ -105,16 +106,26 @@ const MenuBar = () => {
   const isMobile = useScreen().isMobile;
   const path = usePathname().split("/");
   const router = useRouter();
-  const data = getPaymentClient();
-  let daysLeft = 0;
-  if (data) {
-    const date = new Date(data?.created_at * 1000);
-    const currentDate = new Date();
-    const daysPassed = Math.floor(
-      (currentDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
-    );
-    daysLeft = Math.max(0, 30 - daysPassed); // Ensure it doesn't go negative
+  const [daysLeft, setDaysLeft] = useState<number | null>(null);
+
+  useEffect(() => {
+    getDaysLeft();
+  }, []);
+
+  async function getDaysLeft() {
+    const data = await getPaymentClient();
+    if (data) {
+      const date = new Date(data?.created_at * 1000);
+      const currentDate = new Date();
+      const daysPassed = Math.floor(
+        (currentDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      setDaysLeft(Math.max(0, 30 - daysPassed));
+    } else {
+      setDaysLeft(0);
+    }
   }
+
   return (
     <div className="min-h-14 px-4 justify-between items-center flex text-lg  border-b border-slate-400/10">
       <span className="flex items-center gap-4">
@@ -133,14 +144,16 @@ const MenuBar = () => {
           }
           className="text-sm  hover:cursor-pointer hover:scale-[0.97] transition-all duration-300 "
         >
-          {daysLeft > 0 && daysLeft !== 1 ? (
+          {daysLeft && daysLeft > 0 && daysLeft !== 1 ? (
             <span className="bg-blue-400/20  border-blue-400/50 border  rounded px-2 py-0.5">
               {daysLeft} days left
             </span>
-          ) : (
+          ) : daysLeft ? (
             <div className="bg-red-400/20 border-red-400/50 border  rounded px-2 py-0.5">
               {daysLeft === 1 ? "1 day left" : "Expired"}
             </div>
+          ) : (
+            <Loader className="w-4 h-4 animate-spin" />
           )}
         </div>
         <ProfileIcon />

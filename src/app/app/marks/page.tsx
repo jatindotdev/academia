@@ -88,17 +88,19 @@ const Data = ({ data, category }: { data: MarkDetail[]; category: string }) => {
 
 const MarkData = ({ data }: { data: MarkDetail }) => {
   return (
-    <div className="w-full h-full flex flex-col gap-4 px-2 text-sm text-white/50">
+    <div className="w-full h-full flex flex-col px-2 text-sm text-white/50 justify-center">
       {data.marks.map((item, i) => {
         return (
-          <div
-            key={i}
-            className="flex  items-center justify-between px-3 w-full"
-          >
-            <h1 className="w-[60%]">{item.exam}</h1>
-            <div className="flex gap-2 ">
-              {" "}
-              <h1>{item.obtained}</h1> |<h1>{item.maxMark}</h1>
+          <div key={i} className="flex gap-2 items-center justify-center ">
+            <div className="w-0.5 h-full bg-green-300/80 " />
+            <div className="flex items-center justify-between p-2 w-full  first:pt-0">
+              <h1 className="w-[60%]">{item.exam}</h1>
+              <div className="flex gap-2 text-white/80">
+                {" "}
+                <h1>{item.obtained}</h1>
+                <span className="text-white/50">|</span>
+                <h1>{item.maxMark}</h1>
+              </div>
             </div>
           </div>
         );

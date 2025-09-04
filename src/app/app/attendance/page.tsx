@@ -65,7 +65,7 @@ const Data = ({
                   {item.courseAttendance} %
                 </span>
               </div>
-              <div className=" flex items-center justify-center w-[80%] h-full mx-auto  ">
+              <div className=" flex items-center justify-center w-[80%] h-full mx-auto text-green-300 ">
                 {item.courseTitle}
               </div>
               <div className="flex justify-between w-full px-2 min-h-12 items-center  ">

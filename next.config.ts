@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   experimental: {
     globalNotFound: true,
   },
+  optimizeFonts: true,
 };
 
 export default nextConfig;

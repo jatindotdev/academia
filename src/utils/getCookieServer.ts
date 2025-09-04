@@ -20,9 +20,7 @@ export async function getPayment(user: string) {
     (currentDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
   );
   if (daysPassed === 30) {
-    await fetch(
-      `${process.env.PAYMENT_LINK!}/payment/unsubscribe?user=${user}`
-    );
+    fetch(`${process.env.PAYMENT_LINK!}/payment/unsubscribe?user=${user}`);
     response = null;
   }
 

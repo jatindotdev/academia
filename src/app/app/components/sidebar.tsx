@@ -8,6 +8,7 @@ import {
   CalendarClock,
   CircleUserRound,
   Hourglass,
+  Settings2,
   X,
 } from "lucide-react";
 import Image from "next/image";
@@ -91,6 +92,11 @@ const Menu = () => {
       name: "profile",
       url: "/app/profile",
       icon: <CircleUserRound className="w-5 h-5" />,
+    },
+    {
+      name: "configuration",
+      url: "/app/configuration",
+      icon: <Settings2 className="w-5 h-5" />,
     },
   ];
 
