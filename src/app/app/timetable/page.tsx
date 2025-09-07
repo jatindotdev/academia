@@ -169,28 +169,7 @@ const Data = ({
   today: number | undefined;
 }) => {
   const { data: attendanceData, isError } = useAttendance();
-  const { toggleOptional, isOptional } = useOptionalClasses();
 
-  const safeToggleOptional = (
-    courseCode: string | undefined,
-    time: string | undefined,
-    dayorder: number | undefined
-  ) => {
-    if (courseCode && time && dayorder) {
-      toggleOptional(courseCode, time, dayorder);
-    }
-  };
-
-  const safeIsOptional = (
-    courseCode: string | undefined,
-    time: string | undefined,
-    dayorder: number | undefined
-  ) => {
-    if (courseCode && time && dayorder) {
-      return isOptional(courseCode, time, dayorder);
-    }
-    return false;
-  };
   const currentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -205,7 +184,6 @@ const Data = ({
   return (
     <div className="py-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-full grid gap-4 px-2 lg:px-5">
       {data[dayorder].class.map((item) => {
-        const currentDayorder = dayorder + 1;
         const attendance = attendanceData?.find(
           (i) =>
             i.courseCode === item.courseCode &&
@@ -233,34 +211,6 @@ const Data = ({
                     <span className="px-2 py-0.5 rounded-full text-sm apply-border-sm bg-black text-blue-400">
                       {item.courseType?.charAt(0)}
                     </span>
-                    <button
-                      onClick={() =>
-                        safeToggleOptional(
-                          item.courseCode,
-                          item.time,
-                          currentDayorder
-                        )
-                      }
-                      className={`p-1 rounded-full ${
-                        safeIsOptional(
-                          item.courseCode,
-                          item.time,
-                          currentDayorder
-                        )
-                          ? "bg-orange-500/20"
-                          : "bg-white/5"
-                      } apply-border-sm`}
-                    >
-                      {safeIsOptional(
-                        item.courseCode,
-                        item.time,
-                        currentDayorder
-                      ) ? (
-                        <BookmarkCheck className="w-4 h-4 text-orange-400" />
-                      ) : (
-                        <Bookmark className="w-4 h-4 text-white/60" />
-                      )}
-                    </button>
                   </div>
                   <div className="flex items-center gap-2">
                     {current && (
@@ -277,26 +227,24 @@ const Data = ({
                     </span>
                   </div>
                 </div>
-                {!safeIsOptional(
-                  item.courseCode,
-                  item.time,
-                  currentDayorder
-                ) ? (
-                  <div className=" flex items-center justify-center w-[80%] h-full mx-auto  text-green-300 flex-col gap-3">
-                    <h1 className="w-full">{item.courseTitle}</h1>
-                    <h2 className=" text-sm text-white/60 flex gap-2 w-full">
-                      <span className="text-white/80">Class Room</span> -
-                      <span>{item.courseRoomNo}</span>
-                    </h2>
-                  </div>
-                ) : (
-                  <div className=" flex items-center justify-center w-[80%] h-full mx-auto  text-orange-300 flex-col gap-3 ">
-                    <h1>Optional</h1>
-                  </div>
-                )}
+
+                <div className=" flex items-center justify-center w-[80%] h-full mx-auto  text-green-300 flex-col gap-3">
+                  <h1 className="w-full">{item.courseTitle}</h1>
+                  <h2 className=" text-sm text-white/60 flex gap-2 w-full">
+                    <span className="text-white/80">Class Room</span> -
+                    <span>{item.courseRoomNo}</span>
+                  </h2>
+                </div>
 
                 {attendance ? (
-                  <AttendanceData attendance={attendance} />
+                  <AttendanceData
+                    attendance={attendance}
+                    dayorder={dayorder}
+                    item={{
+                      courseCode: item.courseCode!,
+                      time: item.time,
+                    }}
+                  />
                 ) : !isError ? (
                   <div className="w-full min-h-12 flex justify-center items-center animate-pulse  ">
                     <span className="background-rounded apply-border-sm">
@@ -341,7 +289,38 @@ const Data = ({
   );
 };
 
-const AttendanceData = ({ attendance }: { attendance: AttendanceDetail }) => {
+const AttendanceData = ({
+  attendance,
+  dayorder,
+  item,
+}: {
+  attendance: AttendanceDetail;
+  dayorder: number;
+  item: { courseCode: string; time: string };
+}) => {
+  const currentDayorder = dayorder + 1;
+  const { toggleOptional, isOptional } = useOptionalClasses();
+  const safeToggleOptional = (
+    courseCode: string | undefined,
+    time: string | undefined,
+    dayorder: number | undefined
+  ) => {
+    if (courseCode && time && dayorder) {
+      toggleOptional(courseCode, time, dayorder);
+    }
+  };
+
+  const safeIsOptional = (
+    courseCode: string | undefined,
+    time: string | undefined,
+    dayorder: number | undefined
+  ) => {
+    if (courseCode && time && dayorder) {
+      return isOptional(courseCode, time, dayorder);
+    }
+    return false;
+  };
+
   return (
     <div className="flex justify-between w-full px-2 min-h-12 items-center ">
       <h1
@@ -353,14 +332,26 @@ const AttendanceData = ({ attendance }: { attendance: AttendanceDetail }) => {
       >
         {attendance.courseAttendance} %
       </h1>
-      <div className="flex gap-1 bg-white/5  px-1 py-0.5 rounded-full text-sm apply-border-sm">
-        <h1 className=" px-2 py-0.5 rounded-full text-sm  apply-border-sm bg-black text-blue-400">
-          {attendance.courseConducted}
-        </h1>
-        <span className="px-2 py-0.5 rounded-full text-sm  apply-border-sm bg-white/5 backdrop-blur-3xl ">
-          {attendance.courseConducted - attendance.courseAbsent}
-        </span>
-      </div>
+      <button
+        onClick={() =>
+          safeToggleOptional(item.courseCode, item.time, currentDayorder)
+        }
+        className={`p-1 rounded-full ${
+          safeIsOptional(item.courseCode, item.time, currentDayorder)
+            ? "bg-orange-500/20"
+            : "bg-white/5"
+        } apply-border-sm`}
+      >
+        {safeIsOptional(item.courseCode, item.time, currentDayorder) ? (
+          <div className="flex items-center justify-center gap-2 text-sm px-2">
+            <BookmarkCheck className="w-4 h-4 text-orange-400" />
+            <h1>Optional</h1>
+          </div>
+        ) : (
+          <Bookmark className="w-4 h-4 text-white/60" />
+        )}
+      </button>
+
       <div className="flex gap-1 bg-white/5  pl-2 pr-1 py-0.5 rounded-full text-sm apply-border-sm items-center ">
         <h1 className="capitalize">
           {attendance.courseAttendanceStatus?.status}
