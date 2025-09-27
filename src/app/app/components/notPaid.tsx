@@ -64,7 +64,7 @@ const NotPaid = () => {
           }}
           disabled={isLoading || isRedirect}
           className={`py-1.5 w-full px-10 rounded border border-white/10 capitalize text-[16px] flex items-center justify-center  ${
-            isLoading
+            isLoading || isRedirect
               ? "bg-white/10 cursor-not-allowed"
               : "bg-white/5 hover:bg-white/10"
           }`}

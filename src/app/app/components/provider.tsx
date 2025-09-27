@@ -148,12 +148,10 @@ const MenuBar = () => {
             <span className="bg-blue-400/20  border-blue-400/50 border  rounded px-2 py-0.5">
               {daysLeft} days left
             </span>
-          ) : daysLeft ? (
+          ) : (
             <div className="bg-red-400/20 border-red-400/50 border  rounded px-2 py-0.5">
               {daysLeft === 1 ? "1 day left" : "Expired"}
             </div>
-          ) : (
-            <Loader className="w-4 h-4 animate-spin" />
           )}
         </div>
         <ProfileIcon />
