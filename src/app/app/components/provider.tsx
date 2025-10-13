@@ -11,7 +11,6 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   CreditCard,
   Github,
-  Loader,
   LogOut,
   PanelRightOpen,
   ShieldAlert,
