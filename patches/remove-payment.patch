@@ -1,0 +1,477 @@
+diff --git a/Types/payment.ts b/Types/payment.ts
+deleted file mode 100644
+index 71ee434..0000000
+--- a/Types/payment.ts
++++ /dev/null
+@@ -1,19 +0,0 @@
+-export interface PaymentType {
+-  email: string;
+-  created_at: number;
+-  payload: Payload;
+-}
+-
+-export interface Payload {
+-  amount: number;
+-  contact: string;
+-  email: string;
+-  method: string;
+-  id: string;
+-}
+-
+-export interface PaymentUserInfo {
+-  name: string;
+-  email: string;
+-  contact: string;
+-}
+diff --git a/src/app/app/components/notPaid.tsx b/src/app/app/components/notPaid.tsx
+deleted file mode 100644
+index 7c62878..0000000
+--- a/src/app/app/components/notPaid.tsx
++++ /dev/null
+@@ -1,94 +0,0 @@
+-"use client";
+-import { useUserInfo } from "@/hooks/query";
+-import { createPaymentLink } from "@/server/payment";
+-import { getEmail } from "@/utils/getCookieClient";
+-import { Loader } from "lucide-react";
+-import { useRouter } from "next/navigation";
+-import React, { useState } from "react";
+-
+-const NotPaid = () => {
+-  const { data } = useUserInfo();
+-  const email = getEmail();
+-  const [isLoading, setIsLoading] = useState(false);
+-  const [isRedirect, setIsRedirect] = useState(false);
+-  const [error, setError] = useState<string | null>(null);
+-  const router = useRouter();
+-  return (
+-    <div className="w-full mx-auto max-w-lg h-full items-center flex flex-col px-4 lg:py-26 py-14  gap-20 ">
+-      <div>
+-        <h1 className="text-[16px] text-white/50 font-medium flex items-center justify-center gap-2">
+-          <span className="text-red-500">❤️</span>Trusted by 12k+ Students
+-        </h1>
+-      </div>
+-      <div className="relative    w-full text-center text-xl flex flex-col gap-8 items-center px-4 py-7 rounded-lg border-dotted border-2 border-white/10 bg-background">
+-        <div className="absolute lg:-top-5 lg:-left-5 -top-5 text-[15px]  px-2.5 py-1.5  bg-black rounded-lg backdrop-blur-3xl border border-white/10 text-blue-300">
+-          ₹ 20 / <span className="text-sm">M</span>
+-        </div>
+-        <h1 className="text-[17px]">AcademiaX is not more free 🥲</h1>
+-        <h2 className="text-[14px] lg:text-[16px] text-white/50 pl-3 border-l-2 border-blue-100/80 text-left">
+-          I don’t compel anyone to pay and use this app, but if you genuinely
+-          adore this user interface and impressive performance, then you have
+-          the option to do so. It’s entirely up to you.
+-        </h2>
+-        {error && (
+-          <div className="p-2 text-sm text-red-400 bg-red-900/20 rounded-md w-full">
+-            {error}
+-          </div>
+-        )}
+-        <button
+-          onClick={async () => {
+-            try {
+-              setIsRedirect(false);
+-              setError(null);
+-              setIsLoading(true);
+-
+-              if (!data) {
+-                setError("RazorPay Error");
+-                return;
+-              }
+-
+-              const link = await createPaymentLink({
+-                name: data.name,
+-                email: email,
+-                contact: data.mobile,
+-              });
+-              setIsRedirect(true);
+-              router.replace(link);
+-              return;
+-            } catch (err) {
+-              setError("Failed to create payment link.");
+-              console.error("Payment link error:", err);
+-            } finally {
+-              setIsLoading(false);
+-            }
+-          }}
+-          disabled={isLoading || isRedirect}
+-          className={`py-1.5 w-full px-10 rounded border border-white/10 capitalize text-[16px] flex items-center justify-center  ${
+-            isLoading || isRedirect
+-              ? "bg-white/10 cursor-not-allowed"
+-              : "bg-white/5 hover:bg-white/10"
+-          }`}
+-        >
+-          {isLoading ? (
+-            <Loader className="animate-spin w-5 h-5 text-white " />
+-          ) : isRedirect ? (
+-            "Redirecting..."
+-          ) : (
+-            "Pay"
+-          )}
+-        </button>
+-        <h3 className="text-[16px] text-blue-300 px-5 ">
+-          Yes, a student made this. Now, a student can pay too!
+-        </h3>
+-        <a
+-          href="/app/timetable"
+-          className="text-[14px] underline text-white/50"
+-        >
+-          If you paid and its not redirected then click Here{" "}
+-        </a>
+-      </div>
+-    </div>
+-  );
+-};
+-
+-export default NotPaid;
+diff --git a/src/app/app/components/paid.tsx b/src/app/app/components/paid.tsx
+deleted file mode 100644
+index 7b96c7b..0000000
+--- a/src/app/app/components/paid.tsx
++++ /dev/null
+@@ -1,66 +0,0 @@
+-"use client";
+-import { getPaymentClient } from "@/utils/getCookieClient";
+-import React from "react";
+-
+-const Paid = () => {
+-  const data = getPaymentClient();
+-  if (!data) return;
+-  const date = new Date(data.created_at * 1000);
+-  const time =
+-    date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+-
+-  return (
+-    <div className="w-full h-full items-center  flex flex-col ">
+-      <div className="max-w-sm lg:mt-40 mt-24 w-full text-center text-xl flex flex-col items-center  p-4  ">
+-        <div className="w-full text-white/50 ">
+-          <h1>Transaction Info</h1>
+-        </div>
+-        <h2 className="text-sm text-white/50 w-full text-start flex flex-col mt-5 justify-center border-2 border-dotted bg-background border-white/10 rounded-lg p-4">
+-          <ul className="flex flex-col gap-5">
+-            <li className="flex justify-between">
+-              <p>Mail ID</p>{" "}
+-              <span className="text-blue-200 ">{data?.email}</span>
+-            </li>
+-            <li className="flex justify-between">
+-              <p>Phone No</p>{" "}
+-              <span className="text-blue-200 ">{data?.payload.contact}</span>
+-            </li>
+-            <li className="flex justify-between">
+-              <p>Amount</p>{" "}
+-              <span className="text-blue-200 ">
+-                ₹ {(data?.payload.amount / 100).toFixed(2)} / M
+-              </span>
+-            </li>
+-            <li className="flex justify-between ">
+-              <p>Method</p>{" "}
+-              <span className="uppercase text-blue-200 ">
+-                {data?.payload.method}
+-              </span>
+-            </li>
+-            <li className="flex justify-between">
+-              <p>Paid on</p> <span className="text-blue-200 ">{time}</span>
+-            </li>
+-            <li className="flex justify-between">
+-              <p>Valid Till</p>
+-              <span className="text-blue-200 ">
+-                {(() => {
+-                  const expiryDate = new Date(date.getTime());
+-                  expiryDate.setDate(expiryDate.getDate() + 30);
+-                  return (
+-                    expiryDate.getDate() +
+-                    "/" +
+-                    (expiryDate.getMonth() + 1) +
+-                    "/" +
+-                    expiryDate.getFullYear()
+-                  );
+-                })()}
+-              </span>
+-            </li>
+-          </ul>
+-        </h2>
+-      </div>
+-    </div>
+-  );
+-};
+-
+-export default Paid;
+diff --git a/src/app/app/components/provider.tsx b/src/app/app/components/provider.tsx
+index 2a5ba76..0b6595c 100644
+--- a/src/app/app/components/provider.tsx
++++ b/src/app/app/components/provider.tsx
+@@ -1,26 +1,18 @@
+ "use client";
++import { useUserInfo } from "@/hooks/query";
++import { useScreen, useSidebar } from "@/hooks/zustand";
++import { SidebarToggle } from "@/utils/sidebarToggle";
++import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+-import React, { useEffect, useRef, useState } from "react";
+-import Sidebar from "./sidebar";
+-import LastUpdated from "./lastUpdated";
+ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+-import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+ import { persistQueryClient } from "@tanstack/react-query-persist-client";
+-import { useScreen, useSidebar } from "@/hooks/zustand";
++import { Github, LogOut, PanelRightOpen, ShieldAlert } from "lucide-react";
+ import { usePathname, useRouter } from "next/navigation";
+-import {
+-  CreditCard,
+-  Github,
+-  LogOut,
+-  PanelRightOpen,
+-  ShieldAlert,
+-} from "lucide-react";
+-import { SidebarToggle } from "@/utils/sidebarToggle";
+-import { useUserInfo } from "@/hooks/query";
+-import Loading from "../loading";
++import React, { useEffect, useRef, useState } from "react";
+ import { DiNpm } from "react-icons/di";
+-import Link from "next/link";
+-import { getPaymentClient } from "@/utils/getCookieClient";
++import Loading from "../loading";
++import LastUpdated from "./lastUpdated";
++import Sidebar from "./sidebar";
+ const queryClient = new QueryClient({
+   defaultOptions: {
+     queries: {
+@@ -105,25 +97,6 @@ const MenuBar = () => {
+   const isMobile = useScreen().isMobile;
+   const path = usePathname().split("/");
+   const router = useRouter();
+-  const [daysLeft, setDaysLeft] = useState<number | null>(null);
+-
+-  useEffect(() => {
+-    getDaysLeft();
+-  }, []);
+-
+-  async function getDaysLeft() {
+-    const data = await getPaymentClient();
+-    if (data) {
+-      const date = new Date(data?.created_at * 1000);
+-      const currentDate = new Date();
+-      const daysPassed = Math.floor(
+-        (currentDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+-      );
+-      setDaysLeft(Math.max(0, 30 - daysPassed));
+-    } else {
+-      setDaysLeft(0);
+-    }
+-  }
+ 
+   return (
+     <div className="min-h-14 px-4 justify-between items-center flex text-lg  border-b border-slate-400/10">
+@@ -135,26 +108,7 @@ const MenuBar = () => {
+         )}
+         <span className="capitalize">{path[path.length - 1]}</span>
+       </span>
+-      <div className="flex items-center justify-center gap-4">
+-        <div
+-          onClick={() =>
+-            path[path.length - 1] !== "subscription" &&
+-            router.push("/app/subscription")
+-          }
+-          className="text-sm  hover:cursor-pointer hover:scale-[0.97] transition-all duration-300 "
+-        >
+-          {daysLeft && daysLeft > 0 && daysLeft !== 1 ? (
+-            <span className="bg-blue-400/20  border-blue-400/50 border  rounded px-2 py-0.5">
+-              {daysLeft} days left
+-            </span>
+-          ) : (
+-            <div className="bg-red-400/20 border-red-400/50 border  rounded px-2 py-0.5">
+-              {daysLeft === 1 ? "1 day left" : "Expired"}
+-            </div>
+-          )}
+-        </div>
+-        <ProfileIcon />
+-      </div>
++      <ProfileIcon />
+     </div>
+   );
+ };
+@@ -215,15 +169,12 @@ const ProfileDrop = ({
+       ref={dropRef}
+       className="absolute top-14 right-0 w-48  bg-white/5 backdrop-blur-lg rounded-lg border border-white/5 z-50 flex flex-col shadow-2xl overflow-hidden "
+     >
+-      <Link
+-        href="/app/subscription"
++      <a
++        href="https://github.com/jatindotdev"
+         className="w-full px-4 py-3 flex justify-between items-center font-medium hover:bg-white/10 transition-colors focus:outline-none border-b border-white/5"
+       >
+-        <span>Subscription</span>
+-        <span>
+-          <CreditCard className="w-5 h-5" />
+-        </span>
+-      </Link>
++        <span>AcademiaX (patched)</span>
++      </a>
+ 
+       <a
+         href="https://github.com/jackwaghan/AcademiaX"
+diff --git a/src/app/app/subscription/layout.tsx b/src/app/app/subscription/layout.tsx
+deleted file mode 100644
+index b0a2adf..0000000
+--- a/src/app/app/subscription/layout.tsx
++++ /dev/null
+@@ -1,14 +0,0 @@
+-import { Metadata } from "next";
+-export const runtime = "edge";
+-export const metadata: Metadata = {
+-  title: "Subscription",
+-  description: "AcademiaX Subscription",
+-};
+-
+-export default async function RootLayout({
+-  children,
+-}: {
+-  children: React.ReactNode;
+-}) {
+-  return <div className="w-full h-full ">{children}</div>;
+-}
+diff --git a/src/app/app/subscription/page.tsx b/src/app/app/subscription/page.tsx
+deleted file mode 100644
+index 0d6a344..0000000
+--- a/src/app/app/subscription/page.tsx
++++ /dev/null
+@@ -1,13 +0,0 @@
+-"use client";
+-import React from "react";
+-import Paid from "../components/paid";
+-import { getPaymentClient } from "@/utils/getCookieClient";
+-import NotPaid from "../components/notPaid";
+-
+-const Page = () => {
+-  const cookie = getPaymentClient();
+-  if (!cookie) return <NotPaid />;
+-  return <Paid />;
+-};
+-
+-export default Page;
+diff --git a/src/middleware.ts b/src/middleware.ts
+index 985b3b6..8f6cc14 100644
+--- a/src/middleware.ts
++++ b/src/middleware.ts
+@@ -1,5 +1,5 @@
+-import { NextResponse, NextRequest } from "next/server";
+-import { getCookie, getPayment } from "./utils/getCookieServer";
++import { NextRequest, NextResponse } from "next/server";
++import { getCookie } from "./utils/getCookieServer";
+ 
+ export const runtime = "experimental-edge";
+ 
+@@ -10,12 +10,7 @@ export async function middleware(request: NextRequest) {
+   if (!cookie.user)
+     return NextResponse.redirect(new URL("/auth/logout", request.url));
+ 
+-  const data = await getPayment(cookie.user);
+-  if (!data && request.nextUrl.pathname !== "/app/subscription")
+-    return NextResponse.redirect(new URL("/app/subscription", request.url));
+-  const response = NextResponse.next();
+-  response.cookies.set("Payment-data", JSON.stringify(data), { path: "/" });
+-  return response;
++  return NextResponse.next();
+ }
+ 
+ export const config = {
+diff --git a/src/server/payment.ts b/src/server/payment.ts
+deleted file mode 100644
+index 80d70f2..0000000
+--- a/src/server/payment.ts
++++ /dev/null
+@@ -1,43 +0,0 @@
+-"use server";
+-import { PaymentUserInfo } from "../../Types/payment";
+-
+-export async function createPaymentLink(userInfo: PaymentUserInfo) {
+-  try {
+-    const myHeaders = new Headers();
+-    const authString = Buffer.from(
+-      `${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`
+-    ).toString("base64");
+-    myHeaders.append("Content-Type", "application/json");
+-    myHeaders.append("Authorization", `Basic ${authString}`);
+-
+-    const raw = JSON.stringify({
+-      upi_link: "true",
+-      amount: 2000,
+-      currency: "INR",
+-      accept_partial: false,
+-      description: "AcademiaX Subscription",
+-      customer: {
+-        name: userInfo.name,
+-        contact: userInfo.contact,
+-        email: userInfo.email,
+-      },
+-      callback_url: "https://academiax.in/app/timetable",
+-      callback_method: "get",
+-    });
+-
+-    const requestOptions = {
+-      method: "POST",
+-      headers: myHeaders,
+-      body: raw,
+-    };
+-
+-    const res = await fetch(
+-      "https://api.razorpay.com/v1/payment_links",
+-      requestOptions
+-    ).then((response) => response.json());
+-
+-    return res.short_url;
+-  } catch (error) {
+-    console.log(error);
+-  }
+-}
+diff --git a/src/utils/getCookieClient.ts b/src/utils/getCookieClient.ts
+index 97ab035..5b3f243 100644
+--- a/src/utils/getCookieClient.ts
++++ b/src/utils/getCookieClient.ts
+@@ -1,6 +1,5 @@
+ "use client";
+ import Cookies from "js-cookie";
+-import { PaymentType } from "../../Types/payment";
+ export function getCookie() {
+   const cookie = Cookies.get("token");
+   return cookie as string;
+@@ -10,9 +9,3 @@ export function getEmail() {
+   const user = Cookies.get("user");
+   return user as string;
+ }
+-
+-export function getPaymentClient() {
+-  const paymentCookie = Cookies.get("Payment-data");
+-  const cookie = paymentCookie ? JSON.parse(paymentCookie) : null;
+-  return cookie as PaymentType | null;
+-}
+diff --git a/src/utils/getCookieServer.ts b/src/utils/getCookieServer.ts
+index 397eeb2..53a0a8f 100644
+--- a/src/utils/getCookieServer.ts
++++ b/src/utils/getCookieServer.ts
+@@ -5,26 +5,3 @@ export async function getCookie() {
+   const user = (await cookies()).get("user")?.value;
+   return { token, user };
+ }
+-
+-export async function getPayment(user: string) {
+-  const response = await fetch(
+-    `${process.env.PAYMENT_LINK!}/payment/getuser?user=${user}`
+-  )
+-    .then((e) => e.json())
+-    .then((e) => (e.length !== 0 ? e[0] : null));
+-
+-  if (!response) return null;
+-  const date = new Date(response?.created_at * 1000);
+-  const currentDate = new Date();
+-  const daysPassed = Math.floor(
+-    (currentDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+-  );
+-  if (daysPassed >= 30) {
+-    await fetch(
+-      `${process.env.PAYMENT_LINK!}/payment/unsubscribe?user=${user}`
+-    );
+-    return null;
+-  }
+-
+-  return response;
+-}
