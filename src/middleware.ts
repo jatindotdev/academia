@@ -1,5 +1,5 @@
-import { NextResponse, NextRequest } from "next/server";
-import { getCookie, getPayment } from "./utils/getCookieServer";
+import { NextRequest, NextResponse } from "next/server";
+import { getCookie } from "./utils/getCookieServer";
 
 export const runtime = "experimental-edge";
 
@@ -10,12 +10,7 @@ export async function middleware(request: NextRequest) {
   if (!cookie.user)
     return NextResponse.redirect(new URL("/auth/logout", request.url));
 
-  const data = await getPayment(cookie.user);
-  if (!data && request.nextUrl.pathname !== "/app/subscription")
-    return NextResponse.redirect(new URL("/app/subscription", request.url));
-  const response = NextResponse.next();
-  response.cookies.set("Payment-data", JSON.stringify(data), { path: "/" });
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
